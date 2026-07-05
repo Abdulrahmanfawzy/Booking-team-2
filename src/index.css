@@ -155,3 +155,7 @@
     @apply scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100;
   }
 }
+
+.mainContainer{
+  @apply mx-auto px-7 max-w-full sm:max-w-[40rem] md:max-w-[48rem] lg:max-w-[60rem] xl:max-w-[75rem] 2xl:max-w-[90rem];
+}
