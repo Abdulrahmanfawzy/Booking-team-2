@@ -5,9 +5,7 @@ export default function MainLayout() {
   return (
     <>
       <Nav />
-      <main className="mainContainer">
-        <Outlet />
-      </main>
+      <Outlet />
     </>
   );
 }

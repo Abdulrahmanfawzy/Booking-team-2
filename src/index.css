@@ -155,5 +155,5 @@
 }
 
 .mainContainer{
-  @apply mx-auto px-7 max-w-full sm:max-w-[40rem] md:max-w-[48rem] lg:max-w-[60rem] xl:max-w-[75rem] 2xl:max-w-[90rem];
+  @apply mx-auto px-13 max-w-full sm:max-w-[40rem] md:max-w-[48rem] lg:max-w-[60rem] xl:max-w-[75rem] 2xl:max-w-[90rem];
 }
