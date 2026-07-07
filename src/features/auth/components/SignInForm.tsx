@@ -1,17 +1,21 @@
 import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { PhoneField } from "@/features/auth/components/PhoneField";
-
-type SignInFormValues = {
-  phone: string;
-};
+import {
+  signInSchema,
+  type SignInFormValues,
+} from "@/features/auth/schemas/auth.schema";
 
 const SignInForm = () => {
   const {
     control,
     handleSubmit,
     formState: { isSubmitting },
-  } = useForm<SignInFormValues>({ defaultValues: { phone: "" } });
+  } = useForm<SignInFormValues>({
+    resolver: zodResolver(signInSchema),
+    defaultValues: { phone: "" },
+  });
 
   const onSubmit = async (data: SignInFormValues) => {
     //API
@@ -26,16 +30,6 @@ const SignInForm = () => {
       <Controller
         name="phone"
         control={control}
-        rules={{
-          required: "Please enter your phone number",
-          validate: (v) => {
-            const digits = (v ?? "").replace(/\D/g, "");
-            return (
-              (digits.length >= 8 && digits.length <= 15) ||
-              "Please enter a valid phone number"
-            );
-          },
-        }}
         render={({ field, fieldState }) => (
           <PhoneField {...field} error={fieldState.error?.message} />
         )}

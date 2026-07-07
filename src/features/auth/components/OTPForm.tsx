@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -9,11 +10,13 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-
-type OtpForm = { code: string };
+import {
+  otpSchema,
+  CODE_LENGTH,
+  type OtpFormValues,
+} from "@/features/auth/schemas/auth.schema";
 
 const RESEND_SECONDS = 55;
-const CODE_LENGTH = 4;
 
 // Placeholder "correct" code until the verify API is wired up.
 const CORRECT_CODE = "0000";
@@ -28,7 +31,10 @@ export default function OTPVerifyForm() {
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<OtpForm>({ defaultValues: { code: "" } });
+  } = useForm<OtpFormValues>({
+    resolver: zodResolver(otpSchema),
+    defaultValues: { code: "" },
+  });
 
   const [secondsLeft, setSecondsLeft] = useState(RESEND_SECONDS);
   const [wrongCode, setWrongCode] = useState(false);
@@ -39,7 +45,7 @@ export default function OTPVerifyForm() {
     return () => clearInterval(id);
   }, [secondsLeft]);
 
-  const onSubmit = async ({ code }: OtpForm) => {
+  const onSubmit = async ({ code }: OtpFormValues) => {
     if (code !== CORRECT_CODE) {
       setWrongCode(true);
       return;
@@ -69,13 +75,6 @@ export default function OTPVerifyForm() {
       <Controller
         name="code"
         control={control}
-        rules={{
-          required: "Please enter the code",
-          minLength: {
-            value: CODE_LENGTH,
-            message: `Enter all ${CODE_LENGTH} digits`,
-          },
-        }}
         render={({ field }) => (
           <InputOTP
             maxLength={CODE_LENGTH}
