@@ -1,5 +1,5 @@
 import { useForm, Controller } from "react-hook-form";
-import { Button } from "@/components/shared/Button";
+import { Button } from "@/components/ui/button";
 import { PhoneField } from "@/features/auth/components/PhoneField";
 import { Input } from "@/components/shared/Input";
 
@@ -25,7 +25,7 @@ const SignUpForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="mt-8 flex flex-col gap-5">
+    <form onSubmit={handleSubmit(onSubmit)} className="mt-6 flex flex-col gap-4">
       <Input
         label="Full Name"
         placeholder="Full Name"
@@ -63,7 +63,13 @@ const SignUpForm = () => {
         )}
       />
 
-      <Button type="submit" fullWidth isLoading={isSubmitting}>
+      <Button
+        type="submit"
+        variant="brand"
+        size="xl"
+        fullWidth
+        isLoading={isSubmitting}
+      >
         Sign up
       </Button>
     </form>

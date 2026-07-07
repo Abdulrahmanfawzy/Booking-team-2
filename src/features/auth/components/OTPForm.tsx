@@ -3,7 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/shared/Button";
+import { Button } from "@/components/ui/button";
 import {
   InputOTP,
   InputOTPGroup,
@@ -147,6 +147,8 @@ export default function OTPVerifyForm() {
 
         <Button
           type="submit"
+          variant="brand"
+          size="xl"
           fullWidth
           isLoading={isSubmitting}
           className="mt-2"
