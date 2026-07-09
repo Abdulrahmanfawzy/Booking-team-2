@@ -9,7 +9,6 @@ export default function Navbarhome() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const sidebarRef = useRef<HTMLDivElement>(null);
 
-    // يقفل السايدبار لو دوست برا
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
@@ -52,7 +51,6 @@ export default function Navbarhome() {
                         <img src={img} className="size-full object-cover" alt="profile" />
                     </div>
 
-                    {/* زرار المنيو للموبايل بس */}
                     <button 
                         onClick={() => setIsSidebarOpen(true)}
                         className="md:hidden p-2 bg-gray-100 rounded-lg"
@@ -63,7 +61,6 @@ export default function Navbarhome() {
             </div>
         </nav>
 
-        {/* ===== السايدبار بتاع البروفايل ===== */}
         {/* الـ Overlay */}
         {isSidebarOpen && (
             <div 
@@ -72,12 +69,10 @@ export default function Navbarhome() {
             ></div>
         )}
 
-        {/* السايدبار نفسه */}
         <div ref={sidebarRef} className={`fixed top-0 right-0 h-full w-full sm:w-96 bg-white z-50 shadow-2xl transform transition-transform duration-300 ${
             isSidebarOpen ? 'translate-x-0' : 'translate-x-full'
         }`}>
             
-            {/* زرار الاغلاق X */}
             <div className="flex justify-end p-4">
                 <button 
                     onClick={() => setIsSidebarOpen(false)}

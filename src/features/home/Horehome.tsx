@@ -1,40 +1,43 @@
-import { MapPin, Calendar, Sparkles } from "lucide-react";
 import img1 from '../../assets/h1.jpg'
 import img2 from '../../assets/h2.jpg'
 import img3 from '../../assets/nav.jpg'
 import './Horehome.css'
+import { Sparkles, Calendar } from "lucide-react";
+import { LuMapPin } from "react-icons/lu";
+
+
+
 
 export default function Horehome() {
-   return (
-  <section className="hero-section">
+  return (
+    <section className="hero-section">
 
-    <div className="circle-one"></div>
-    <div className="circle-two"></div>
+      <div className="circle circle-1"></div>
+      <div className="circle circle-2"></div>
 
-    <div className="hero-content">
-
-      <div className="hero-left">
-
-        <div className="location-icon">
-          <MapPin className="map-icon" fill="currentColor" />
+      <div className="side-badge left-badge">
+        <div className="badge-icon">
+          <LuMapPin className="map-icon" />
         </div>
-
-        <p className="location-text">
-          Doctors near you
-        </p>
-
+        <p>Doctors near you</p>
       </div>
 
-      <div className="hero-center">
+      <div className="side-badge right-badge">
+        <div className="badge-icon arrow-bg">
+          <svg className="arrow-icon" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        </div>
+        <span>Book Now</span>
+      </div>
 
+      <div className="hero-content">
         <div className="upgrade-badge">
           <Sparkles size={14} />
           <span>Upgrade your account</span>
         </div>
 
-        <h1>
-          Find and book top doctors near you
-        </h1>
+        <h1>Find and book top doctors near you</h1>
 
         <p>
           Easily find top-rated specialists near you and book appointments in
@@ -44,41 +47,22 @@ export default function Horehome() {
         </p>
 
         <div className="patients">
-
           <div className="avatars">
-            <img src={img3} alt="" />
-            <img src={img2} alt="" />
-            <img src={img1} alt="" />
+            <img src={img3} alt="patient" />
+            <img src={img2} alt="patient" />
+            <img src={img1} alt="patient" />
           </div>
-
           <span>10k+ happy patients</span>
-
         </div>
 
         <div className="hero-buttons">
-
-          <button className="primary-btn">
-            Get Started
-          </button>
-
+          <button className="primary-btn">Get Started</button>
           <button className="secondary-btn">
             <Calendar size={20} />
             Book Appointment
           </button>
-
         </div>
-
       </div>
-
-    </div>
-    
-    <div className="book-tag">
-      <svg className="arrow-icon" width="28" height="28" viewBox="0 0 24 24" fill="#3b82f6">
-        <path d="M12 2L2 22h20L12 2z"/>
-      </svg>
-      <span>Book Now</span>
-    </div>
-
-  </section>
-);
+    </section>
+  );
 }

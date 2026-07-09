@@ -9,7 +9,7 @@
 .faqHeader {
   text-align: center;
   margin-bottom: 50px;
-  white-space: nowrap; /* يخلي العنوان سطر واحد */
+  white-space: nowrap; 
 }
 
 .faqBadge {
@@ -99,7 +99,7 @@
 ========================== */
 
 @media (max-width: 1024px) {
-  .faqTitle { font-size: 36px; white-space: normal; } /* في التابلت نسيبه يكسر */
+  .faqTitle { font-size: 36px; white-space: normal; } 
   .faqSection { padding: 80px 4%; }
 }
 

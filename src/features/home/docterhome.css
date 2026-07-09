@@ -38,7 +38,7 @@
 
 /* Card */
 .doctorCard {
-  min-width: 367px; /* العرض المطلوب */
+  min-width: 367px; 
   width: 367px;
   background: #fff;
   border-radius: 16px;
@@ -51,7 +51,6 @@
 }
 .doctorCard:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(0,0,0,.1); }
 
-/* الجزء اللي فوق */
 .cardTop { display: flex; gap: 14px; margin-bottom: 16px; }
 .doctorImage {
   width: 72px; height: 72px; border-radius: 14px; overflow: hidden; flex-shrink: 0;

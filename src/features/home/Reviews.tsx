@@ -23,13 +23,20 @@ const reviews = [
     rating: 5,
     text: "The best platform for finding doctors. The interface is clean and booking was super fast. Highly recommend!"
   },
-  {
-    id: 3,
-    name: "Mohamed",
-    image: avatar3,
-    rating: 5,
-    text: "I got my appointment confirmed in 2 minutes. Customer support is amazing and doctors are very professional."
+  { 
+  id: 3,
+  name: "Mohamed",
+  image: avatar3,
+  rating: 5,
+  text: "I got my appointment confirmed in 2 minutes. Customer support is amazing and doctors are very professional.",
+  style: {
+    width: "80px",
+    height: "80px",
+    borderRadius: "50%",
+    objectFit: "cover",
+    border: "1px solid  #000",
   },
+},
   {
     id: 4,
     name: "Nour",
@@ -70,7 +77,8 @@ const Reviews = () => {
             className={`avatar ${index === active? "active" : ""}`}
             onClick={() => setActive(index)}
           >
-            <img src={review.image} alt={review.name} />
+            <img src={review.image} alt={review.name}  />
+
           </div>
         ))}
       </div>
