@@ -6,21 +6,18 @@ import {
   signInSchema,
   type SignInFormValues,
 } from "@/features/auth/schemas/auth.schema";
+import { useLogin } from "@/features/auth/hooks/useLogin";
 
 const SignInForm = () => {
-  const {
-    control,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<SignInFormValues>({
+  const { control, handleSubmit } = useForm<SignInFormValues>({
     resolver: zodResolver(signInSchema),
     defaultValues: { phone: "" },
   });
 
-  const onSubmit = async (data: SignInFormValues) => {
-    //API
-    console.log("sign in with", data.phone);
-  };
+  const { mutate, isPending } = useLogin();
+
+  // Toast + navigation to /otp-verify live inside useLogin.
+  const onSubmit = (data: SignInFormValues) => mutate(data);
 
   return (
     <form
@@ -40,7 +37,7 @@ const SignInForm = () => {
         variant="brand"
         size="xl"
         fullWidth
-        isLoading={isSubmitting}
+        isLoading={isPending}
       >
         Sign in
       </Button>

@@ -7,22 +7,23 @@ import {
   signUpSchema,
   type SignUpFormValues,
 } from "@/features/auth/schemas/auth.schema";
+import { useSignUp } from "@/features/auth/hooks/useSignUp";
 
 const SignUpForm = () => {
   const {
     register,
     control,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpSchema),
     defaultValues: { name: "", email: "", phone: "" },
   });
 
-  const onSubmit = async (data: SignUpFormValues) => {
-    // TODO: wire up to the auth API
-    console.log("sign up with", data.name, data.email, data.phone);
-  };
+  const { mutate, isPending } = useSignUp();
+
+  // Toast + navigation to /otp-verify live inside useSignUp.
+  const onSubmit = (data: SignUpFormValues) => mutate(data);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="mt-6 flex flex-col gap-4">
@@ -52,7 +53,7 @@ const SignUpForm = () => {
         variant="brand"
         size="xl"
         fullWidth
-        isLoading={isSubmitting}
+        isLoading={isPending}
       >
         Sign up
       </Button>

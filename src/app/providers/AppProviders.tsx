@@ -1,10 +1,16 @@
 import type { ReactNode } from "react";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "@/lib/queryClient";
+import { AuthProvider } from "@/features/auth/context/AuthProvider";
+import { Toaster } from "@/components/ui/sonner";
 
-type Props = {
-  children: ReactNode;
-};
-
-/** Top-level providers (theme, query client, etc. can be added here). */
-export function AppProviders({ children }: Props) {
-  return <>{children}</>;
+export function AppProviders({ children }: { children: ReactNode }) {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        {children}
+        <Toaster position="top-center" richColors />
+      </AuthProvider>
+    </QueryClientProvider>
+  );
 }

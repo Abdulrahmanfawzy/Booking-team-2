@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,11 +15,10 @@ import {
   CODE_LENGTH,
   type OtpFormValues,
 } from "@/features/auth/schemas/auth.schema";
+import { useVerifyOtp } from "@/features/auth/hooks/useVerifyOtp";
+import { useResendOtp } from "@/features/auth/hooks/useResendOtp";
 
 const RESEND_SECONDS = 55;
-
-// Placeholder "correct" code until the verify API is wired up.
-const CORRECT_CODE = "0000";
 
 const slotBase =
   "size-14 rounded-xl border bg-(--Auth-bg) text-xl font-semibold text-text-h " +
@@ -27,17 +26,30 @@ const slotBase =
 
 export default function OTPVerifyForm() {
   const navigate = useNavigate();
+  const location = useLocation();
+  // Phone carried over from the sign-in / sign-up step via router state.
+  const phone = (location.state as { phone?: string })?.phone ?? "";
+
   const {
     control,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<OtpFormValues>({
     resolver: zodResolver(otpSchema),
     defaultValues: { code: "" },
   });
 
+  // Success (persist login + navigate) is handled inside useVerifyOtp.
+  // isError drives the "Wrong code" UI; reset() clears it.
+  const {
+    mutate: verifyOtp,
+    isPending: isVerifying,
+    isError: isWrongCode,
+    reset,
+  } = useVerifyOtp();
+  const { mutate: resendOtp } = useResendOtp();
+
   const [secondsLeft, setSecondsLeft] = useState(RESEND_SECONDS);
-  const [wrongCode, setWrongCode] = useState(false);
 
   useEffect(() => {
     if (secondsLeft <= 0) return;
@@ -45,24 +57,17 @@ export default function OTPVerifyForm() {
     return () => clearInterval(id);
   }, [secondsLeft]);
 
-  const onSubmit = async ({ code }: OtpFormValues) => {
-    if (code !== CORRECT_CODE) {
-      setWrongCode(true);
-      return;
-    }
-    setWrongCode(false);
-    console.log("verify", code);
-  };
+  const onSubmit = ({ code }: OtpFormValues) => verifyOtp({ phone, code });
 
   const handleResend = () => {
-    //api
-    setWrongCode(false);
+    reset();
     setSecondsLeft(RESEND_SECONDS);
+    resendOtp({ phone });
   };
 
   const slotClasses = cn(
     slotBase,
-    wrongCode
+    isWrongCode
       ? "border-red-400 ring-1 ring-red-400 data-[active=true]:ring-red-500"
       : "border-border-secondary data-[active=true]:ring-brand",
   );
@@ -81,7 +86,7 @@ export default function OTPVerifyForm() {
             pattern={REGEXP_ONLY_DIGITS}
             value={field.value}
             onChange={(value) => {
-              if (wrongCode) setWrongCode(false);
+              if (isWrongCode) reset();
               field.onChange(value);
             }}
             onBlur={field.onBlur}
@@ -97,14 +102,14 @@ export default function OTPVerifyForm() {
       />
 
       {/* Error line: field validation, or a code the API rejected */}
-      {(errors.code || wrongCode) && (
+      {(errors.code || isWrongCode) && (
         <p className="text-sm font-medium text-red-500">
-          {wrongCode ? "Wrong code" : errors.code?.message}
+          {isWrongCode ? "Wrong code" : errors.code?.message}
         </p>
       )}
 
       {/* Countdown while waiting; full options once it lapses or on a wrong code */}
-      {secondsLeft > 0 && !wrongCode ? (
+      {secondsLeft > 0 && !isWrongCode ? (
         <p className="text-sm text-text">
           Resend code in <span className="text-brand">{secondsLeft}</span> s
         </p>
@@ -133,7 +138,7 @@ export default function OTPVerifyForm() {
         variant="brand"
         size="xl"
         fullWidth
-        isLoading={isSubmitting}
+        isLoading={isVerifying}
         className="mt-2"
       >
         Verify

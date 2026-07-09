@@ -6,6 +6,7 @@ import SignUpPage from "@/app/routes/SignUpPage";
 import OTPVerifyPage from "@/app/routes/OTPVerifyPage";
 import ChooseSpecialistPage from "@/features/chooseSpecialist/components/ChooseSpecialistPage";
 import AuthLayout from "@/components/layout/AuthLayout";
+import ProtectedRoute from "./routes/ProtectedRoute";
 import ProfilePageLayout from "./routes/ProfilePageLayout";
 import ProfilePersonalPage from "./routes/ProfilePersonalPage";
 import ProfilePasswordPage from "./routes/ProfilePasswordPage";
@@ -43,5 +44,9 @@ export const router = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    element: <ProtectedRoute />, // ← guard wraps everything below
+    children: [],
   },
 ]);
