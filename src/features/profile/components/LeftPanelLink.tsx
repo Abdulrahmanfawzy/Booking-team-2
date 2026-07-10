@@ -1,30 +1,15 @@
-import { cva } from "class-variance-authority";
 import type { LucideIcon } from "lucide-react";
 import { NavLink } from "react-router-dom";
-
-const classVariants = cva("text-sm cursor-pointer", {
-  variants: {
-    class: {
-      logout: "text-red-500",
-      info: "text-black",
-      password: "text-black",
-    },
-  },
-  defaultVariants: { class: "info" },
-});
 
 export default function LeftPanelLink({
   title,
   Icon,
   variant,
 }: {
-  title: "Personal information" | "Password Management" | "Log out";
+  title: "Personal information" | "Password Management";
   Icon: LucideIcon;
-  variant?: "info" | "logout" | "password";
+  variant?: "info" | "password";
 }) {
-  const iconColor =
-    variant === "info" || variant === "password" ? "#000000" : "#ff0000";
-
   return (
     <NavLink
       to={variant}
@@ -35,16 +20,8 @@ export default function LeftPanelLink({
       }
     >
       {/*Icon  */}
-      <Icon
-        color={iconColor}
-        className={`${variant === "logout" ? "-rotate-180" : ""}`}
-      />
-      {(variant === "info" || variant === "password") && (
-        <p className={classVariants({ class: variant })}>{title}</p>
-      )}
-      {variant === "logout" && (
-        <button className={classVariants({ class: variant })}>{title}</button>
-      )}
+      <Icon color="#000000" />
+      <p className="text-black">{title}</p>
     </NavLink>
   );
 }

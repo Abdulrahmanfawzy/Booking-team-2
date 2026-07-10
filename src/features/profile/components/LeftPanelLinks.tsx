@@ -1,5 +1,6 @@
-import { LockKeyhole, LogOut, UserRound } from "lucide-react";
+import { LockKeyhole, UserRound } from "lucide-react";
 import LeftPanelLink from "./LeftPanelLink";
+import LogoutButton from "./LogoutButton";
 
 export default function LeftPanelLinks() {
   return (
@@ -14,7 +15,7 @@ export default function LeftPanelLinks() {
         Icon={LockKeyhole}
         variant="password"
       />
-      <LeftPanelLink title="Log out" Icon={LogOut} variant="logout" />
+      <LogoutButton className="px-4" />
     </>
   );
 }

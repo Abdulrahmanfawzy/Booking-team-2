@@ -31,7 +31,7 @@ export default function ProfilePageLayout() {
               address="129,El-Nasr Street, Cairo"
             />
           </div>
-          <div className="mx-8 mb-10 space-y-2 md:block hidden">
+          <div className="mx-8 mb-10 space-y-2 md:block ">
             {/*Left panel link*/}
             <LeftPanelLinks />
           </div>
