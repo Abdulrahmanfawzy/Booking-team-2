@@ -7,7 +7,7 @@ import OTPVerifyPage from "@/app/routes/OTPVerifyPage";
 import ChooseSpecialistPage from "@/features/chooseSpecialist/components/ChooseSpecialistPage";
 import AuthLayout from "@/components/layout/AuthLayout";
 import ProtectedRoute from "./routes/ProtectedRoute";
-import ProfilePageLayout from "./routes/ProfilePageLayout";
+import ProfilePageLayout from "@/components/layout/ProfilePageLayout";
 import ProfilePersonalPage from "./routes/ProfilePersonalPage";
 import ProfilePasswordPage from "./routes/ProfilePasswordPage";
 import BookingPage from "./routes/BookingPage";
@@ -25,7 +25,7 @@ export const router = createBrowserRouter([
     element: <MainLayout />,
     children: [
       { path: "/", element: <HomePage /> },
-      { path:"/Booking" , element:<BookingPage/>},
+      { path: "/Booking", element: <BookingPage /> },
       { path: "/contact-us", element: <ContactUsPage /> },
       {
         path: "/choose-specialist",

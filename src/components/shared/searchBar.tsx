@@ -16,7 +16,10 @@ const SearchBar = ({
 }) => {
   return (
     <Field className="w-142 hidden md:block">
-      <InputGroup style={{ backgroundColor: color, paddingBlock: padding }}>
+      <InputGroup
+        className="bg-grey border-transparent"
+        style={{ backgroundColor: color, paddingBlock: padding }}
+      >
         <InputGroupInput
           id="inline-start-input"
           placeholder="Search about specialty, doctor "

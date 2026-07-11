@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import LogoutButton from "./LogoutButton";
 
-import ProfileImage from "./profileImage";
+import ProfileImage from "./ProfileImage";
 
 export default function ProfileIconMenu({ imageUrl }: { imageUrl: string }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,7 +42,7 @@ export default function ProfileIconMenu({ imageUrl }: { imageUrl: string }) {
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="md:absolute md:right-0 fixed z-50 md:mt-2 md:w-70 md:rounded-xl md:py-4 border h-screen md:h-fit md:inset-auto inset-0 bg-white shadow-lg space-y-2 py-8 px-5">
+        <div className="md:absolute md:right-0 fixed z-50 md:mt-2 md:w-70 md:rounded-xl md:py-4  h-screen md:h-fit md:inset-auto inset-0 bg-grey shadow-lg space-y-2 py-8 px-5">
           {/*close mob menu button */}
           <div className="w-full flex justify-end md:hidden ">
             <button

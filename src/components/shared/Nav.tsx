@@ -5,9 +5,10 @@ import SearchBar from "./searchBar";
 import { useState } from "react";
 import ProfileIconMenu from "@/features/profile/components/ProfileMenu";
 import { cn } from "@/lib/utils";
+import profileImage from "@/assets/profileImage.jpg";
 
 const linkClass =
-  "block text-text-h text-sm font-light capitalize py-2 px-3 bg-Auth-bg rounded-lg w-fit cursor-pointer";
+  "block text-text-h text-sm font-light capitalize py-2 px-3 bg-grey rounded-lg w-fit cursor-pointer";
 const links = ["home", "booking", "chat"];
 
 const Nav = () => {
@@ -55,7 +56,7 @@ const Nav = () => {
               </button>
             </li>
           </ul>
-          <ProfileIconMenu imageUrl="/public/profileImage.jpg" />
+          <ProfileIconMenu imageUrl={profileImage} />
         </section>
       </section>
     </nav>
