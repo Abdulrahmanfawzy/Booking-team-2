@@ -1,61 +1,66 @@
-// import {Link} from "react-router-dom";
-import { X } from "lucide-react";
-import { Bell } from "lucide-react";
+import { Link } from "react-router-dom";
+import { X, Bell, Menu } from "lucide-react";
 
 import SearchBar from "./searchBar";
-const Nav = ()=>{
-    return (
-      <nav>
-        {/*====  Here Put Link Tag ==== */}
-        <section className="mainContainer py-7 flex justify-between items-center gap-15">
-          <a href="#">
-            <img src="/public/Logo.png" className="min-w-8" />
-          </a>
-          <SearchBar />
+import { useState } from "react";
+import ProfileIconMenu from "@/features/profile/components/ProfileMenu";
+import { cn } from "@/lib/utils";
+import profileImage from "@/assets/profileImage.jpg";
 
-          {/* Nav Links And Profile Page */}
-          <section className="flex items-center gap-5">
-            <ul className="flex items-center gap-5">
-              {/*===== Here But Navigate After Create The Routing ==== */}
-              {/* Nav Links */}
-              <a href="#">
-                <li className="text-text-h text-sm font-light capitalize py-2 px-3 bg-Auth-bg rounded-lg w-fit">
-                  home
-                </li>
-              </a>
-              <a href="#">
-                <li className="text-text-h text-sm font-light capitalize py-2 px-3 bg-Auth-bg rounded-lg w-fit">
-                  booking
-                </li>
-              </a>
-              <a href="#">
-                <li className="text-text-h text-sm font-light capitalize py-2 px-3 bg-Auth-bg rounded-lg w-fit">
-                  chat
-                </li>
-              </a>
-              <a href="#">
-                <li className="text-text-h text-sm font-light capitalize py-2 px-3 bg-Auth-bg rounded-lg w-fit">
-                  <X />
-                </li>
-              </a>
-              <a href="#">
-                <li className="text-text-h text-sm font-light capitalize py-2 px-3 bg-Auth-bg rounded-lg w-fit">
-                  <Bell />
-                </li>
-              </a>
-            </ul>
-            {/*=== Nav Links ===*/}
+const linkClass =
+  "block text-text-h text-sm font-light capitalize py-2 px-3 bg-grey rounded-lg w-fit cursor-pointer";
+const links = ["home", "booking", "chat"];
 
-            {/* Profile Image */}
-            <section className="size-11 rounded-full  cursor-pointer overflow-hidden">
-              <img src="https://placehold.co/400" className="size-full"></img>
-            </section>
-            {/*===== Profile Image =====*/}
-          </section>
-          {/* ===== Nav Links And Profile Page ===== */}
+const Nav = () => {
+  const [linksMenu, setLinksMenu] = useState<boolean>(false);
+  return (
+    <nav className="md:px-13 px-4  sticky top-0 z-50">
+      <section className=" py-7 flex bg-white justify-between items-center gap-15 ">
+        <Link to="/">
+          <img src="/src/assets/logo.png" className="min-w-8" />
+        </Link>
+        <SearchBar />
+        {/* Nav Links And Profile Page */}
+        <section className="flex items-center gap-5">
+          <ul className="flex items-center gap-2">
+            {/* Nav Links */}
+            {linksMenu && (
+              <>
+                {links.map((link, index) => (
+                  <li key={index}>
+                    <Link
+                      to={`/${link === "home" ? "" : link}`}
+                      className={linkClass}
+                    >
+                      {link}
+                    </Link>
+                  </li>
+                ))}
+              </>
+            )}
+            <li>
+              <button
+                type="button"
+                className={linkClass}
+                onClick={() => setLinksMenu((prev) => !prev)}
+              >
+                {linksMenu ? <X /> : <Menu />}
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                className={cn(linkClass, "hidden md:block")}
+              >
+                <Bell />
+              </button>
+            </li>
+          </ul>
+          <ProfileIconMenu imageUrl={profileImage} />
         </section>
-      </nav>
-    );
-}
+      </section>
+    </nav>
+  );
+};
 
 export default Nav;

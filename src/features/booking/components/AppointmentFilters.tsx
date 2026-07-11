@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 
 interface AppointmentFiltersProps {
   activeFilter: string;
@@ -18,16 +19,17 @@ export default function AppointmentFilters({
   return (
     <div className="flex items-center gap-1">
       {tabs.map((tab) => (
-        <button
+        <Button
+          variant="brand"
           key={tab.value}
           onClick={() => onFilterChange(tab.value)}
-          className={`h-8 px-4 rounded-full text-sm font-medium transition-colors cursor-pointer ${activeFilter === tab.value
-              ? "bg-booking-filter-active-bg text-booking-filter-active-text"
-              : "bg-transparent text-booking-text-secondary hover:bg-gray-100"
+          className={` ${activeFilter === tab.value
+            ? "bg-brand text-white"
+            : "bg-transparent text-booking-text-secondary "
             }`}
         >
           {tab.label}
-        </button>
+        </Button>
       ))}
     </div>
   );

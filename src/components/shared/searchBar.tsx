@@ -7,10 +7,19 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group";
 
-const SearchBar = ({ color , padding}: { color?: string , padding?:string}) => {
+const SearchBar = ({
+  color,
+  padding,
+}: {
+  color?: string;
+  padding?: string;
+}) => {
   return (
-    <Field className="">
-      <InputGroup style={{backgroundColor:color, paddingBlock:padding}}>
+    <Field className="w-142 hidden md:block">
+      <InputGroup
+        className="bg-grey border-transparent"
+        style={{ backgroundColor: color, paddingBlock: padding }}
+      >
         <InputGroupInput
           id="inline-start-input"
           placeholder="Search about specialty, doctor "
@@ -22,6 +31,6 @@ const SearchBar = ({ color , padding}: { color?: string , padding?:string}) => {
       </InputGroup>
     </Field>
   );
-}
+};
 
 export default SearchBar;

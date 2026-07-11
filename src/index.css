@@ -6,6 +6,7 @@
 :root {
   --brand: #145db8;
   --Auth-bg: #f6f8fa;
+  --grey: #f5f6f7;
   --Auth-head-font-color: #000712;
   --text: #6b6375;
   --text-h: #08060d;
@@ -104,6 +105,7 @@
   --color-text: var(--text);
   --color-text-h: var(--text-h);
   --color-Auth-bg: var(--Auth-bg);
+  --color-grey: var(--grey);
   --color-Auth-head-font-color: var(--Auth-head-font-color);
   --font-heading: "Playfair Display", Georgia, "Times New Roman", serif;
   --font-sans: "Geist Variable", sans-serif;
@@ -154,7 +156,7 @@
   }
 }
 
-.mainContainer{
+.mainContainer {
   @apply mx-auto px-13 max-w-full sm:max-w-[40rem] md:max-w-[48rem] lg:max-w-[60rem] xl:max-w-[75rem] 2xl:max-w-[90rem];
 }
 

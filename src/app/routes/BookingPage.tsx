@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { mockAppointments } from "../data/mockAppointments";
-import AppointmentCard from "./AppointmentCard";
-import AppointmentFilters from "./AppointmentFilters";
-import BookingDatePicker from "./BookingDatePicker";
+import { mockAppointments } from "@/features/booking/data/mockAppointments";
+import AppointmentCard from "@/features/booking/components/AppointmentCard";
+import AppointmentFilters from "@/features/booking/components/AppointmentFilters";
+import BookingDatePicker from "@/features/booking/components/BookingDatePicker";
 
 export default function BookingContent() {
   const [activeFilter, setActiveFilter] = useState<string>("all");
