@@ -35,7 +35,7 @@ const Homework: React.FC = () => {
 
   const renderStars = () => (
     <div className="star-bg">
-      {Array.from({ length: 40 }).map((_, i) => (
+      {Array.from({ length: 35 }).map((_, i) => (
         <span key={i} className={`star ${(i + 3) % 5 === 0? "fill" : ""}`}>
           {(i + 3) % 5 === 0? "★" : "☆"}
         </span>

@@ -3,7 +3,6 @@
   max-width: 1000px;
   margin: 0 auto;
   padding: 100px 5%;
-  background: #ffffff;
 }
 
 .faqHeader {
@@ -26,7 +25,6 @@
 .faqTitle {
   font-size: 44px;
   font-weight: 500;
-  color: #334155;
   font-family: "Georgia", serif;
   line-height: 1.2;
   white-space: nowrap; 

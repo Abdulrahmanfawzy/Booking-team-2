@@ -3,7 +3,6 @@
   max-width: 1440px;
   margin: auto;
   padding: 90px 5%;
-  background: #fff;
   box-sizing: border-box;
 }
 
@@ -15,7 +14,7 @@
   margin-bottom: 50px;
 }
 .sectionTag { display: inline-block; color: #4f46e5; font-size: 15px; font-weight: 600; margin-bottom: 12px; }
-.topDoctors__header h2 { font-size: 48px; font-weight: 700; line-height: 1.2; color: #1e1b4b; margin-bottom: 18px; }
+.topDoctors__header h2 { font-size: 48px; font-weight: 700; line-height: 1.2;  margin-bottom: 18px; }
 .topDoctors__header p { max-width: 470px; font-size: 17px; line-height: 1.7; color: #7b7b7b; }
 
 .viewAllBtn {

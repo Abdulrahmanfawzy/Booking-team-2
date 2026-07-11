@@ -1,6 +1,5 @@
 .homework {
   padding: 90px 0;
-  background: #F8FAFC;
 }
 
 .mainContainer {
@@ -12,8 +11,7 @@ h2 {
   text-align: center;
   font-size: 36px;
   font-family: serif;
-  font-weight: 600;
-  color: #1e293b;
+  font-weight: 400;
   margin-bottom: 60px;
   letter-spacing: 3px;
   text-transform: capitalize;
@@ -46,17 +44,18 @@ h2 {
 
 .star-bg{
     position:absolute;
-    inset:25px 20px;
+    inset:17px 16px;
     display:grid;
     grid-template-columns:repeat(11,1fr);
-    grid-template-rows: repeat(4, 1fr);
-    gap:18px 10px;
+    grid-template-rows: repeat(5, 1fr);
+    gap:11px 7px;
     opacity:.8;
     z-index: 1;
     pointer-events: none;
+    margin: 0;
 }
-.star{ color:#93c5fd; font-size:16px; text-align: center; }
-.star.fill{ color:#3b82f6; }
+.star{ color:#93c5fd; font-size:20px; text-align: center; }
+.star.fill{ color:#3b83f681; }
 
 .search-box,.calendar,.payment-flow,.card-title,.card-text { position: relative; z-index: 2; }
 
@@ -299,7 +298,6 @@ h2 {
 
 
 
-/* ===== CARD 3: PAYMENT ===== */
 .payment-flow {
   display: flex;
   flex-direction: column;
@@ -385,10 +383,9 @@ h2 {
 top:30% ;
 
 }
-.payment-text p{
 
 
-}
+
 
 
 @media(max-width:768px){

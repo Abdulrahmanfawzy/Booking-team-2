@@ -15,7 +15,7 @@ export default function Horehome() {
       <div className="circle circle-1"></div>
       <div className="circle circle-2"></div>
 
-      <div className="side-badge left-badge">
+      <div className=" left-badge">
         <div className="badge-icon">
           <LuMapPin className="map-icon" />
         </div>

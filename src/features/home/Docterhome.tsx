@@ -50,7 +50,6 @@ const Docterhome = () => {
               </div>
             </div>
 
-            {/* الجزء اللي تحت: السعر */}
             <div className="priceRow">
               <span>Price/hour</span>
               <h4>{doctor.price}</h4>

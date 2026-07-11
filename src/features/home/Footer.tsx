@@ -2,7 +2,9 @@ import { MessageCircle, Phone, Mail, MapPin } from "lucide-react";
 import { FaFacebook, FaYoutube, FaLinkedin, FaApple } from "react-icons/fa";
 import { IoLogoGooglePlaystore } from "react-icons/io5";
 import img from '../../assets/f1.png'
-import imgg from '../../assets/Logo.png'
+import imgg from '../../assets/logo.png'
+
+
 
 import "./Footer.css";
 

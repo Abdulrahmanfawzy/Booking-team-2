@@ -57,8 +57,8 @@
 }
 
 .right-badge{
-  bottom: 12%;
-  right: 8%;
+  bottom: 15%;
+  right: 25%;
 }
 .right-badge span{
   font-size: 14px;
@@ -67,8 +67,14 @@
   writing-mode: vertical-rl; 
   transform: rotate(180deg); 
   color: #1E293B;
-}
+    right: 180px;
 
+}
+ .left-badge{
+  position: absolute;
+  margin-left: 12%;
+
+}
 .badge-icon{
   width: 50px;
   height: 50px;
@@ -76,12 +82,22 @@
   align-items: center;
   justify-content: center;
   color: #3B82F6;
+   margin-left: 23%;
+    border: 2px solid #fff;
+
+
 }
 .badge-icon .map-icon{
   width: 28px;
   height: 28px;
-}
+  border: 2 solid #fff;
+  left: auto;
 
+
+}
+ .right-badge{
+
+ }
 .arrow-bg{
   background: #BFDBFE;
   border-radius: 50%;

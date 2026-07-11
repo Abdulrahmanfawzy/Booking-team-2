@@ -73,7 +73,7 @@
 .ctaImage img { width: 400px; height: auto; }
 
 /* ========== Main Footer ========== */
-.footerMain { padding: 240px 5% 40px; }
+.footerMain { padding: 50px 5% 20px; }
 .footerContainer { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 50px; margin-bottom: 50px; }
 
 .footerLogo { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
