@@ -12,7 +12,7 @@ const DoctorCard = ({
   price,
 }) => {
   return (
-    <section className="shadow-[0px_8px_24px_rgba(149,157,165,0.2)] rounded-lg p-5">
+    <section className="shadow-main rounded-lg p-5">
       {/* Doctor Info */}
       <section>
         {/* Here We Make This Card Reusable By Using Header Flag */}

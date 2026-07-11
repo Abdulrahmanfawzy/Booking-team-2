@@ -1,7 +1,7 @@
 import {useState} from "react";
 
 import ChooseSpecialistHeader from "./ChooseSpecialistHeader";
-import DoctorCard from "./DoctorCard"
+import DoctorCard from "../../../components/shared/DoctorCard";
 import ShiftCarousel from "@/components/shared/ShiftCarousel";
 import FilterSelectorsSidebar from "./FilerSelectorsSidebar";
 // Doctors Data
@@ -59,11 +59,11 @@ const ChooseSpecialistPage=()=>{
       <>
         <section className="min-h-[calc(100vh-112.5px)">
           <ChooseSpecialistHeader sideBarState={filterAsideState} setSideBarState={setFilterAsideState} />
-          <section className="mainContainer pb-5">
-            <h1 className="text-2xl font-bold capitalize text-text-h ">
+          <section className="mainContainer">
+            <h1 className="text-2xl font-bold capitalize text-text-h py-5">
               choose specialist
             </h1>
-            <section className="py-5">
+            <section className="pb-5">
               <ShiftCarousel />
             </section>
           </section>

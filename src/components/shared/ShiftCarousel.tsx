@@ -7,6 +7,11 @@ import {
   Ear,
   Eye,
   Stethoscope,
+  Bone,
+  Activity,
+  Ribbon,
+  Droplet,
+  UserRound,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -52,12 +57,35 @@ const specialties = [
     title: "Dermatologist",
     icon: <Stethoscope className="h-4 w-4" />,
   },
+  {
+    id: 9,
+    title: "Orthopedic",
+    icon: <Bone className="h-4 w-4" />,
+  },
+  {
+    id: 10,
+    title: "Gastroenterologist",
+    icon: <Activity className="h-4 w-4" />,
+  },
+  {
+    id: 11,
+    title: "Oncologist",
+    icon: <Ribbon className="h-4 w-4" />,
+  },
+  {
+    id: 12,
+    title: "Endocrinologist",
+    icon: <Droplet className="h-4 w-4" />,
+  },
+  {
+    id: 13,
+    title: "Psychiatrist",
+    icon: <UserRound className="h-4 w-4" />,
+  },
 ];
-
 
 export default function ShiftCarousel() {
   const scrollRef = useRef<HTMLDivElement>(null);
-
   const [selected, setSelected] = useState<number[]>([]);
 
   const toggleFilter = (id: number) => {
@@ -92,28 +120,14 @@ export default function ShiftCarousel() {
 
       <div
         ref={scrollRef}
-        className="
-          flex
-          gap-2
-          overflow-x-auto
-          scroll-smooth
-          px-12
-          py-2
-          no-scrollbar
-        "
+        className="flex gap-2 overflow-x-auto scroll-smooth px-12 py-2 no-scrollbar"
       >
         {specialties.map((item) => (
           <Button
             key={item.id}
             onClick={() => toggleFilter(item.id)}
             variant={selected.includes(item.id) ? "default" : "outline"}
-            className="
-              cursor-pointer
-              rounded-full
-              whitespace-nowrap
-              gap-2
-              flex-shrink-0
-            "
+            className="cursor-pointer rounded-full whitespace-nowrap gap-2 flex-shrink-0"
           >
             {item.icon}
             {item.title}

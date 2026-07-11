@@ -10,7 +10,7 @@ const ChooseSpecialistHeader = ({ sideBarState ,setSideBarState}) => {
           sideBarState={sideBarState}
           setSideBarState={setSideBarState}
         />
-        <SearchBar color="transparent" padding="23px" />
+        <SearchBar color="transparent" padding="23" />
         <Button
           variant="outline"
           className="capitalize bg-transparent! cursor-pointer py-5 px-7!"

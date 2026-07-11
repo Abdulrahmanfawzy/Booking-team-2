@@ -15,10 +15,10 @@ const SearchBar = ({
   padding?: string;
 }) => {
   return (
-    <Field className="w-142 hidden md:block">
+    <Field className="hidden md:block">
       <InputGroup
-        className="bg-grey border-transparent"
-        style={{ backgroundColor: color, paddingBlock: padding }}
+        className="bg-grey border-transparent shadow-card"
+        style={{ backgroundColor: color, paddingBlock:`${padding}px`}}
       >
         <InputGroupInput
           id="inline-start-input"
