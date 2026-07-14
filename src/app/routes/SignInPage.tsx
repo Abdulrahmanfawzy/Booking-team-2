@@ -11,6 +11,7 @@ export default function SignInPage() {
       <SignInForm />
       <OrLine />
       <GoogleBtn text="Sign in with Google" />
+
       <AuthSwitchPrompt
         question="Don't have an account?"
         linkText="Sign up"

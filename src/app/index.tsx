@@ -12,6 +12,8 @@ import ProfilePersonalPage from "./routes/ProfilePersonalPage";
 import ProfilePasswordPage from "./routes/ProfilePasswordPage";
 import BookingPage from "./routes/BookingPage";
 import ContactUsPage from "@/features/contactUs/ContactUs";
+import ForgetPasswordPage from "./routes/ForgetPasswordPage";
+import ResetPasswordPage from "./routes/ResetPasswordPage";
 export const router = createBrowserRouter([
   {
     element: <AuthLayout />,
@@ -19,6 +21,8 @@ export const router = createBrowserRouter([
       { path: "/sign-in", element: <SignInPage /> },
       { path: "/sign-up", element: <SignUpPage /> },
       { path: "/otp-verify", element: <OTPVerifyPage /> },
+      { path: "/forget-password", element: <ForgetPasswordPage /> },
+      { path: "/reset-password", element: <ResetPasswordPage /> },
     ],
   },
   {

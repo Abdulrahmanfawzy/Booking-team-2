@@ -6,7 +6,6 @@ import { useAuth } from "@/features/auth/hooks/useAuth";
 import { getApiErrorMessage } from "@/features/auth/utils/apiError";
 import type { LoginPayload } from "@/features/auth/types/auth";
 
-/** `remember` is a client-side concern, so it rides along here but never reaches the API. */
 type LoginVariables = LoginPayload & { remember: boolean };
 
 export const useLogin = () => {

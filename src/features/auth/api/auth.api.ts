@@ -9,6 +9,10 @@ import type {
   ResendOtpPayload,
   ResendOtpResponse,
   User,
+  ResetPasswordPayload,
+  ResetPasswordResponse,
+  ForgetPasswordPayload,
+  ForgetPasswordResponse,
 } from "@/features/auth/types/auth";
 import apiClient from "@/services/ApiClient";
 
@@ -30,6 +34,22 @@ export const authApi = {
 
   async resendOtp(payload: ResendOtpPayload): Promise<ResendOtpResponse> {
     return apiClient.post<ResendOtpResponse>("/auth/resend-otp", payload);
+  },
+  async forgetPassword(
+    payload: ForgetPasswordPayload,
+  ): Promise<ForgetPasswordResponse> {
+    return apiClient.post<ForgetPasswordResponse>(
+      "/auth/forgot-password",
+      payload,
+    );
+  },
+  async resetPassword(
+    payload: ResetPasswordPayload,
+  ): Promise<ResetPasswordResponse> {
+    return apiClient.post<ResetPasswordResponse>(
+      "/auth/reset-password",
+      payload,
+    );
   },
 
   //persistant login
