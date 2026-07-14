@@ -4,7 +4,7 @@ import { type Country } from "@/features/auth/data/countries";
 import {
   detectCountry,
   defaultCountry,
-} from "@/features/auth/utils/CountryUtils";
+} from "@/features/auth/utils/countryUtils";
 import CountrySelect from "@/features/auth/components/CountrySelect";
 
 type PhoneFieldProps = {

@@ -17,7 +17,13 @@ const SignUpForm = () => {
     formState: { errors },
   } = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpSchema),
-    defaultValues: { name: "", email: "", phone: "" },
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      password: "",
+      password_confirmation: "",
+    },
   });
 
   const { mutate, isPending } = useSignUp();
@@ -46,6 +52,20 @@ const SignUpForm = () => {
         render={({ field, fieldState }) => (
           <PhoneField {...field} error={fieldState.error?.message} />
         )}
+      />
+      <Input
+        label="Password"
+        type="password"
+        placeholder="Password"
+        error={errors.password?.message}
+        {...register("password")}
+      />
+      <Input
+        label="Confirm Password"
+        type="password"
+        placeholder="Confirm Password"
+        error={errors.password_confirmation?.message}
+        {...register("password_confirmation")}
       />
 
       <Button

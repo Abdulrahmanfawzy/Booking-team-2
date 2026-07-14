@@ -27,7 +27,7 @@ const slotBase =
 export default function OTPVerifyForm() {
   const navigate = useNavigate();
   const location = useLocation();
-  // Phone carried over from the sign-in / sign-up step via router state.
+  // Phone carried over from the sign-in router
   const phone = (location.state as { phone?: string })?.phone ?? "";
 
   const {
@@ -39,8 +39,6 @@ export default function OTPVerifyForm() {
     defaultValues: { code: "" },
   });
 
-  // Success (persist login + navigate) is handled inside useVerifyOtp.
-  // isError drives the "Wrong code" UI; reset() clears it.
   const {
     mutate: verifyOtp,
     isPending: isVerifying,
@@ -57,7 +55,8 @@ export default function OTPVerifyForm() {
     return () => clearInterval(id);
   }, [secondsLeft]);
 
-  const onSubmit = ({ code }: OtpFormValues) => verifyOtp({ phone, code });
+  // The API calls the field `otp`; the form calls it `code`.
+  const onSubmit = ({ code }: OtpFormValues) => verifyOtp({ phone, otp: code });
 
   const handleResend = () => {
     reset();

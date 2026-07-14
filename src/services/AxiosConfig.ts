@@ -1,20 +1,17 @@
 import axios from "axios";
 import type { AxiosError } from "axios";
-import { DEV_TOKEN } from "@/constants/token";
+import { tokenStorage } from "@/features/auth/utils/tokenStorage";
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   headers: {
-    // No global Content-Type: axios sets it per request —
-    // application/json for plain objects, multipart/form-data
-    // (with boundary) for FormData.
     Accept: "application/json",
   },
 });
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token") || DEV_TOKEN;
+    const token = tokenStorage.getToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -26,10 +23,11 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
+    // Token expired or revoked
     if (error.response?.status === 401) {
-      localStorage.removeItem("token");
-      if (window.location.pathname !== "/") {
-        window.location.href = "/";
+      tokenStorage.clear();
+      if (window.location.pathname !== "/sign-in") {
+        window.location.href = "/sign-in";
       }
     }
     return Promise.reject(error);

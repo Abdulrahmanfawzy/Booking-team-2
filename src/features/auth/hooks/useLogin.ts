@@ -2,18 +2,26 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { authApi } from "@/features/auth/api/auth.api";
+import { useAuth } from "@/features/auth/hooks/useAuth";
+import { getApiErrorMessage } from "@/features/auth/utils/apiError";
 import type { LoginPayload } from "@/features/auth/types/auth";
+
+/** `remember` is a client-side concern, so it rides along here but never reaches the API. */
+type LoginVariables = LoginPayload & { remember: boolean };
 
 export const useLogin = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   return useMutation({
-    mutationFn: (payload: LoginPayload) => authApi.login(payload),
-    onSuccess: (data, variables) => {
-      toast.success(data.message);
-      // carry the phone to the OTP page via router state
-      navigate("/otp-verify", { state: { phone: variables.phone } });
+    mutationFn: ({ phone, password }: LoginVariables) =>
+      authApi.login({ phone, password }),
+    onSuccess: (res, variables) => {
+      login(res.data.token, res.data.user, variables.remember);
+      toast.success(res.message);
+      navigate("/", { replace: true });
     },
-    onError: () => toast.error("Could not send the code. Please try again."),
+    onError: (error) =>
+      toast.error(getApiErrorMessage(error, "Could not sign you in.")),
   });
 };

@@ -1,41 +1,46 @@
+export interface ApiResponse<T> {
+  success: boolean;
+  message: string;
+  data: T;
+}
+
 export interface User {
-  id: string;
+  id: number;
   name: string;
   email: string;
   phone: string;
+  image: string | null;
+  phone_verified_at: string | null;
+  created_at: string;
 }
 
-//login
+export interface AuthData {
+  user: User;
+  token: string;
+}
+
 export interface LoginPayload {
   phone: string;
+  password: string;
 }
-export interface LoginResponse {
-  message: string;
-}
-//sign up
+export type LoginResponse = ApiResponse<AuthData>;
+
 export interface SignUpPayload {
   name: string;
   email: string;
   phone: string;
+  password: string;
+  password_confirmation: string;
 }
-export interface SignUpResponse {
-  message: string;
-}
+export type SignUpResponse = ApiResponse<unknown>;
 
-// OTP verify
 export interface VerifyOtpPayload {
   phone: string;
-  code: string;
+  otp: string;
 }
-export interface VerifyOtpResponse {
-  token: string;
-  user: User;
-}
+export type VerifyOtpResponse = ApiResponse<unknown[]>;
 
-// Resend OTP
 export interface ResendOtpPayload {
   phone: string;
 }
-export interface ResendOtpResponse {
-  message: string;
-}
+export type ResendOtpResponse = ApiResponse<unknown[]>;

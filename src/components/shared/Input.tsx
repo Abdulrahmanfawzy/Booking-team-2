@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type InputProps = Omit<React.ComponentProps<"input">, "size"> & {
@@ -19,12 +20,38 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       startAdornment,
       endAdornment,
       id,
+      type,
       ...props
     },
     ref,
   ) {
     const generatedId = React.useId();
     const inputId = id ?? generatedId;
+
+    const [showPassword, setShowPassword] = React.useState(false);
+    const isPassword = type === "password";
+
+    // Swap to a text input while revealed, so the characters show.
+    const inputType = isPassword && showPassword ? "text" : type;
+
+    // Password fields get an eye toggle for free — unless the caller
+    // supplied its own trailing element.
+    const trailing =
+      endAdornment ??
+      (isPassword ? (
+        <button
+          type="button"
+          onClick={() => setShowPassword((v) => !v)}
+          aria-label={showPassword ? "Hide password" : "Show password"}
+          className="flex h-full items-center px-4 text-text transition-colors hover:text-text-h"
+        >
+          {showPassword ? (
+            <Eye className="size-5" />
+          ) : (
+            <EyeOff className="size-5" />
+          )}
+        </button>
+      ) : null);
 
     return (
       <div className={cn("w-full", containerClassName)}>
@@ -48,15 +75,16 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <input
             id={inputId}
             ref={ref}
+            type={inputType}
             className={cn(
               "h-full w-full flex-1 bg-transparent px-4 text-sm text-text-h placeholder:text-text outline-none",
               startAdornment && "pl-3",
-              endAdornment && "pr-3",
+              trailing && "pr-0",
               className,
             )}
             {...props}
           />
-          {endAdornment}
+          {trailing}
         </div>
 
         {error && <p className="mt-1.5 text-xs text-destructive">{error}</p>}

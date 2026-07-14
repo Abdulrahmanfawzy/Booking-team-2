@@ -1,7 +1,9 @@
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { PhoneField } from "@/features/auth/components/PhoneField";
+import { Input } from "@/components/shared/Input";
 import {
   signInSchema,
   type SignInFormValues,
@@ -9,14 +11,18 @@ import {
 import { useLogin } from "@/features/auth/hooks/useLogin";
 
 const SignInForm = () => {
-  const { control, handleSubmit } = useForm<SignInFormValues>({
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignInFormValues>({
     resolver: zodResolver(signInSchema),
-    defaultValues: { phone: "" },
+    defaultValues: { phone: "", password: "", remember: false },
   });
 
   const { mutate, isPending } = useLogin();
 
-  // Toast + navigation to /otp-verify live inside useLogin.
   const onSubmit = (data: SignInFormValues) => mutate(data);
 
   return (
@@ -29,6 +35,28 @@ const SignInForm = () => {
         control={control}
         render={({ field, fieldState }) => (
           <PhoneField {...field} error={fieldState.error?.message} />
+        )}
+      />
+      <Input
+        label="Password"
+        type="password"
+        placeholder="Password"
+        error={errors.password?.message}
+        {...register("password")}
+      />
+
+      {/* Remember me — keeps the session alive after the browser closes */}
+      <Controller
+        name="remember"
+        control={control}
+        render={({ field }) => (
+          <label className="flex w-fit cursor-pointer items-center gap-2 text-sm text-text">
+            <Checkbox
+              checked={field.value}
+              onCheckedChange={(checked) => field.onChange(checked === true)}
+            />
+            Remember me
+          </label>
         )}
       />
 

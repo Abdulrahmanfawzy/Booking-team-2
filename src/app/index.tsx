@@ -24,29 +24,30 @@ export const router = createBrowserRouter([
   {
     element: <MainLayout />,
     children: [
+      // Public pages
       { path: "/", element: <HomePage /> },
-      { path: "/Booking", element: <BookingPage /> },
       { path: "/contact-us", element: <ContactUsPage /> },
+
+      // Protected pages — redirect to /sign-in without a token
       {
-        path: "/choose-specialist",
-        element: <ChooseSpecialistPage />,
-      },
-      {
-        path: "/profile",
-        element: <ProfilePageLayout />,
+        element: <ProtectedRoute />,
         children: [
+          { path: "/Booking", element: <BookingPage /> },
+          { path: "/choose-specialist", element: <ChooseSpecialistPage /> },
           {
-            index: true,
-            element: <Navigate to="info" replace />,
+            path: "/profile",
+            element: <ProfilePageLayout />,
+            children: [
+              {
+                index: true,
+                element: <Navigate to="info" replace />,
+              },
+              { path: "info", element: <ProfilePersonalPage /> },
+              { path: "password", element: <ProfilePasswordPage /> },
+            ],
           },
-          { path: "info", element: <ProfilePersonalPage /> },
-          { path: "password", element: <ProfilePasswordPage /> },
         ],
       },
     ],
-  },
-  {
-    element: <ProtectedRoute />, // ← guard wraps everything below
-    children: [],
   },
 ]);
