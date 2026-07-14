@@ -3,6 +3,7 @@ import BirthDayFieldWrapper from "@/features/profile/components/BirthDayFieldWra
 import EditProfileInput from "@/features/profile/components/EditProfileInput";
 import { days, months, years } from "@/features/profile/constants/constants";
 import { useEditProfile } from "@/features/profile/hooks/useEditProfile";
+import { useGetProfile } from "@/features/profile/hooks/useGetUser";
 import {
   editProfileSchema,
   type EditProfileType,
@@ -11,12 +12,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 export default function ProfilePersonalPage() {
+  // const {mutate,isError,isSuccess,error}=useEditProfile();
+  const { data: user } = useGetProfile();
+  console.log(user);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<EditProfileType>({ resolver: zodResolver(editProfileSchema) });
-  // const {mutate,isError,isSuccess,error}=useEditProfile();
 
   function onSubmit(data: EditProfileType) {
     console.log(data);

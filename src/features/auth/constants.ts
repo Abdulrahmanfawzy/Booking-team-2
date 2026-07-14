@@ -5,4 +5,4 @@ export const AUTH_DISABLED = import.meta.env.VITE_DISABLE_AUTH === "true";
 export const MOCK_AUTH = import.meta.env.VITE_USE_MOCK_AUTH !== "false";
 
 // The code the mock OTP flow accepts.
-export const MOCK_OTP_CODE = "0000";
+export const MOCK_OTP_CODE = "1234";
