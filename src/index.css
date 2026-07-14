@@ -19,7 +19,8 @@
   --accent-border: rgba(170, 59, 255, 0.5);
   --social-bg: rgba(244, 243, 236, 0.5);
   --main-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-  --card-shadow:rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  --card-shadow:
+    rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
@@ -150,8 +151,8 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
-  --shadow-main:var(--main-shadow);
-  --shadow-card:var(--card-shadow);
+  --shadow-main: var(--main-shadow);
+  --shadow-card: var(--card-shadow);
 }
 
 @layer utilities {
@@ -172,11 +173,35 @@
   scrollbar-width: none;
 }
 
+.filterSidebarActiveState {
+  transform: translatex(-100%);
+  -webkit-transform: translatex(-100%);
+  -moz-transform: translatex(-100%);
+  -ms-transform: translatex(-100%);
+  -o-transform: translatex(-100%);
+}
 
-.filterSidebarActiveState{
-  transform:translatex(-100%);
-  -webkit-transform:translatex(-100%);
-  -moz-transform:translatex(-100%);
-  -ms-transform:translatex(-100%);
-  -o-transform:translatex(-100%);
+/* Global scrollbar styles */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f2f2f2;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #b7bdc6;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #b7bdc6 #f2f2f2;
 }

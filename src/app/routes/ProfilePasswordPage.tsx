@@ -47,7 +47,7 @@ export default function ProfilePasswordPage() {
           />
         </div>
         <div className="w-full text-end">
-          <Button className="w-1/3 py-3 text-center bg-brand text-white">
+          <Button className="w-1/3 py-3 text-center bg-brand text-white hover:bg-blue-700">
             Save Changes
           </Button>
         </div>

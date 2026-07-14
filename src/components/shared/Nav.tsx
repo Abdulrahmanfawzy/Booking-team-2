@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
-import { X, Bell, Menu } from "lucide-react";
+import { X, Menu } from "lucide-react";
 
 import SearchBar from "./searchBar";
 import { useState } from "react";
 import ProfileIconMenu from "@/features/profile/components/ProfileMenu";
-import { cn } from "@/lib/utils";
 import profileImage from "@/assets/profileImage.jpg";
+import NotificationMenu from "@/features/profile/components/NotificationMenu";
 
 const linkClass =
   "block text-text-h text-sm font-light capitalize py-2 px-3 bg-grey rounded-lg w-fit cursor-pointer";
@@ -52,12 +52,7 @@ const Nav = () => {
               </button>
             </li>
             <li>
-              <button
-                type="button"
-                className={cn(linkClass, "hidden md:block")}
-              >
-                <Bell />
-              </button>
+              <NotificationMenu />
             </li>
           </ul>
           <ProfileIconMenu imageUrl={profileImage} />
