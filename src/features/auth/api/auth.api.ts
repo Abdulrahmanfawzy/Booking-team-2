@@ -9,6 +9,14 @@ import type {
   ResendOtpPayload,
   ResendOtpResponse,
   User,
+  ResetPasswordPayload,
+  ResetPasswordResponse,
+  ForgetPasswordPayload,
+  ForgetPasswordResponse,
+  VerifyResetOtpPayload,
+  VerifyResetOtpResponse,
+  GoogleLoginPayload,
+  GoogleLoginResponse,
 } from "@/features/auth/types/auth";
 import apiClient from "@/services/ApiClient";
 
@@ -30,6 +38,33 @@ export const authApi = {
 
   async resendOtp(payload: ResendOtpPayload): Promise<ResendOtpResponse> {
     return apiClient.post<ResendOtpResponse>("/auth/resend-otp", payload);
+  },
+  async forgetPassword(
+    payload: ForgetPasswordPayload,
+  ): Promise<ForgetPasswordResponse> {
+    return apiClient.post<ForgetPasswordResponse>(
+      "/auth/forgot-password",
+      payload,
+    );
+  },
+  async verifyResetOtp(
+    payload: VerifyResetOtpPayload,
+  ): Promise<VerifyResetOtpResponse> {
+    return apiClient.post<VerifyResetOtpResponse>(
+      "/auth/verify-reset-otp",
+      payload,
+    );
+  },
+  async resetPassword(
+    payload: ResetPasswordPayload,
+  ): Promise<ResetPasswordResponse> {
+    return apiClient.post<ResetPasswordResponse>(
+      "/auth/reset-password",
+      payload,
+    );
+  },
+  async googleLogin(payload: GoogleLoginPayload): Promise<GoogleLoginResponse> {
+    return apiClient.post<GoogleLoginResponse>("/auth/google-login", payload);
   },
 
   //persistant login

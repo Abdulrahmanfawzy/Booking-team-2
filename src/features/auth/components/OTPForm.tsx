@@ -16,18 +16,21 @@ import {
   type OtpFormValues,
 } from "@/features/auth/schemas/auth.schema";
 import { useVerifyOtp } from "@/features/auth/hooks/useVerifyOtp";
+import { useVerifyResetOtp } from "@/features/auth/hooks/useVerifyResetOtp";
 import { useResendOtp } from "@/features/auth/hooks/useResendOtp";
 
 const RESEND_SECONDS = 55;
+
+// "signup" verifies a new account; "reset" exchanges the OTP for a reset_token.
+type OtpFlow = "signup" | "reset";
 
 const slotBase =
   "size-14 rounded-xl border bg-(--Auth-bg) text-xl font-semibold text-text-h " +
   "first:rounded-xl last:rounded-xl transition-all data-[active=true]:ring-2 data-[active=true]:bg-(--bg)";
 
-export default function OTPVerifyForm() {
+export default function OTPVerifyForm({ flow = "signup" }: { flow?: OtpFlow }) {
   const navigate = useNavigate();
   const location = useLocation();
-  // Phone carried over from the sign-in router
   const phone = (location.state as { phone?: string })?.phone ?? "";
 
   const {
@@ -39,13 +42,17 @@ export default function OTPVerifyForm() {
     defaultValues: { code: "" },
   });
 
+  const signupVerify = useVerifyOtp();
+  const resetVerify = useVerifyResetOtp();
   const {
     mutate: verifyOtp,
     isPending: isVerifying,
     isError: isWrongCode,
     reset,
-  } = useVerifyOtp();
+  } = flow === "reset" ? resetVerify : signupVerify;
   const { mutate: resendOtp } = useResendOtp();
+
+  const restartPath = flow === "reset" ? "/forget-password" : "/sign-in";
 
   const [secondsLeft, setSecondsLeft] = useState(RESEND_SECONDS);
 
@@ -55,7 +62,6 @@ export default function OTPVerifyForm() {
     return () => clearInterval(id);
   }, [secondsLeft]);
 
-  // The API calls the field `otp`; the form calls it `code`.
   const onSubmit = ({ code }: OtpFormValues) => verifyOtp({ phone, otp: code });
 
   const handleResend = () => {
@@ -100,14 +106,12 @@ export default function OTPVerifyForm() {
         )}
       />
 
-      {/* Error line: field validation, or a code the API rejected */}
       {(errors.code || isWrongCode) && (
         <p className="text-sm font-medium text-red-500">
           {isWrongCode ? "Wrong code" : errors.code?.message}
         </p>
       )}
 
-      {/* Countdown while waiting; full options once it lapses or on a wrong code */}
       {secondsLeft > 0 && !isWrongCode ? (
         <p className="text-sm text-text">
           Resend code in <span className="text-brand">{secondsLeft}</span> s
@@ -124,7 +128,7 @@ export default function OTPVerifyForm() {
           <span>Or</span>
           <button
             type="button"
-            onClick={() => navigate("/sign-in")}
+            onClick={() => navigate(restartPath)}
             className="font-medium text-brand hover:underline"
           >
             Enter another phone number

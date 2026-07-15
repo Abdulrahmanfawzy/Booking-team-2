@@ -9,6 +9,7 @@ import {
   type SignInFormValues,
 } from "@/features/auth/schemas/auth.schema";
 import { useLogin } from "@/features/auth/hooks/useLogin";
+import AuthSwitchPrompt from "./AuthSwitchPrompt";
 
 const SignInForm = () => {
   const {
@@ -58,6 +59,13 @@ const SignInForm = () => {
             Remember me
           </label>
         )}
+      />
+      <AuthSwitchPrompt
+        question="Forget password?"
+        linkText="Reset Password"
+        to="/forget-password"
+        center={false}
+        mt={0}
       />
 
       <Button

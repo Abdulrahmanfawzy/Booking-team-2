@@ -44,3 +44,34 @@ export interface ResendOtpPayload {
   phone: string;
 }
 export type ResendOtpResponse = ApiResponse<unknown[]>;
+
+export type VerifyResetOtpPayload = {
+  phone: string;
+  otp: string;
+};
+
+export type VerifyResetOtpResponse = ApiResponse<{ reset_token: string }>;
+
+export type ForgetPasswordPayload = { phone: string };
+
+export type ForgetPasswordResponse = {
+  success: boolean;
+  message: string;
+  data: [];
+};
+
+export type ResetPasswordPayload = {
+  phone: string;
+  reset_token: string;
+  password: string;
+  password_confirmation: string;
+};
+
+export type ResetPasswordResponse = {
+  success: boolean;
+  message: string;
+  data: [];
+};
+
+export type GoogleLoginPayload = { id_token: string };
+export type GoogleLoginResponse = ApiResponse<AuthData>;

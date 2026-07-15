@@ -51,6 +51,22 @@ export const otpSchema = z.object({
     .length(CODE_LENGTH, `Enter all ${CODE_LENGTH} digits`),
 });
 
+export const resetPasswordSchema = z
+  .object({
+    password,
+    password_confirmation: z.string().min(1, "Please confirm your password"),
+  })
+  .refine((v) => v.password === v.password_confirmation, {
+    message: "Passwords do not match",
+    path: ["password_confirmation"],
+  });
+
+export const forgetPasswordSchema = z.object({
+  phone,
+});
+
 export type SignUpFormValues = z.infer<typeof signUpSchema>;
 export type SignInFormValues = z.infer<typeof signInSchema>;
 export type OtpFormValues = z.infer<typeof otpSchema>;
+export type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;
+export type ForgetPasswordFormValues = z.infer<typeof forgetPasswordSchema>;
