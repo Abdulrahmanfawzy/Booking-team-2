@@ -34,7 +34,7 @@ export const router = createBrowserRouter([
       // Public pages
       { path: "/", element: <HomePage /> },
       { path: "/contact-us", element: <ContactUsPage /> },
-      { path: "/appointment", element: <AppointmentPage /> },
+      { path: "/appointment/:doctorId", element: <AppointmentPage /> },
 
       // Protected pages — redirect to /sign-in without a token
       {

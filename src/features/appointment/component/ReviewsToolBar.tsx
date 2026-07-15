@@ -8,22 +8,51 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { getApiErrorMessage } from "@/features/auth/utils/apiError";
 import StarRating from "@/features/appointment/component/StarRating";
 import ReviewForm from "@/features/appointment/component/ReviewForm";
+import { usePostRating } from "@/features/appointment/hooks/useRatings";
 
 interface ReviewsToolBarProps {
   rating: number;
   reviewsCount: number;
+  doctorId?: string;
+  /** A rating is tied to a completed booking; without it we can't submit. */
+  bookingId?: string;
 }
 
-const ReviewsToolBar = ({ rating, reviewsCount }: ReviewsToolBarProps) => {
+const ReviewsToolBar = ({
+  rating,
+  reviewsCount,
+  doctorId,
+  bookingId,
+}: ReviewsToolBarProps) => {
   const [open, setOpen] = useState(false);
+  const { mutate: postRating, isPending } = usePostRating();
 
   const handleSubmit = (review: { rating: number; text: string }) => {
-    // UI only for now — no API. Confirm and close.
-    toast.success("Thanks! Your review has been submitted.");
-    console.log("New review:", review);
-    setOpen(false);
+    if (!doctorId || !bookingId) {
+      toast.error("You can review a doctor after a completed appointment.");
+      setOpen(false);
+      return;
+    }
+
+    postRating(
+      {
+        booking_id: bookingId,
+        doctor_id: doctorId,
+        rating: review.rating,
+        comment: review.text,
+      },
+      {
+        onSuccess: () => {
+          toast.success("Thanks! Your review has been submitted.");
+          setOpen(false);
+        },
+        onError: (error) =>
+          toast.error(getApiErrorMessage(error, "Could not submit your review.")),
+      },
+    );
   };
 
   return (
@@ -41,7 +70,7 @@ const ReviewsToolBar = ({ rating, reviewsCount }: ReviewsToolBarProps) => {
             <DialogHeader>
               <DialogTitle className="sr-only">Add your review</DialogTitle>
             </DialogHeader>
-            <ReviewForm onSubmit={handleSubmit} />
+            <ReviewForm onSubmit={handleSubmit} isSubmitting={isPending} />
           </DialogContent>
         </Dialog>
       </div>
