@@ -8,3 +8,8 @@ export const BOOKING_ENDPOINTS = {
   CANCEL: (id: number) => `/bookings/${id}/cancel`,
   RESCHEDULE: (id: number) => `/bookings/${id}/reschedule`,
 } as const;
+
+/** Message-related endpoint paths */
+export const MESSAGES_ENDPOINTS = {
+  SEND: "/messages",
+} as const;
