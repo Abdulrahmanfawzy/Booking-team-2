@@ -12,6 +12,7 @@ import ProfilePersonalPage from "./routes/ProfilePersonalPage";
 import ProfilePasswordPage from "./routes/ProfilePasswordPage";
 import BookingPage from "./routes/BookingPage";
 import ContactUsPage from "@/features/contactUs/ContactUs";
+import AppointmentPage from "./routes/AppointmentPage";
 import ForgetPasswordPage from "./routes/ForgetPasswordPage";
 import ResetOtpVerifyPage from "./routes/ResetOtpVerifyPage";
 import ResetPasswordPage from "./routes/ResetPasswordPage";
@@ -33,6 +34,7 @@ export const router = createBrowserRouter([
       // Public pages
       { path: "/", element: <HomePage /> },
       { path: "/contact-us", element: <ContactUsPage /> },
+      { path: "/appointment/:doctorId", element: <AppointmentPage /> },
 
       // Protected pages — redirect to /sign-in without a token
       {

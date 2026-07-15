@@ -1,0 +1,92 @@
+import { ArrowLeft, Loader2 } from "lucide-react";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
+import BookingCalender from "@/features/appointment/component/BookingCalender";
+import DoctorDetailsCard from "@/features/appointment/component/DoctorDetailsCard";
+import ReviewsToolBar from "@/features/appointment/component/ReviewsToolBar";
+import ReviewCard from "@/features/appointment/component/ReviewCard";
+import { useDoctorDetails } from "@/features/appointment/hooks/useDoctorDetails";
+import { useDoctorRatings } from "@/features/appointment/hooks/useRatings";
+import {
+  mapDoctorDetailsToDoctor,
+  mapDoctorReviewToReview,
+} from "@/features/appointment/utils/mappers";
+
+const AppointmentPage = () => {
+  const navigate = useNavigate();
+  const { doctorId } = useParams();
+
+  const { data, isLoading, isError } = useDoctorDetails(doctorId);
+  const { data: ratingsData } = useDoctorRatings(doctorId);
+
+  if (isLoading) {
+    return (
+      <div className="grid min-h-[60vh] place-items-center">
+        <Loader2 className="size-8 animate-spin text-brand" />
+      </div>
+    );
+  }
+
+  if (isError || !data) {
+    return (
+      <div className="grid min-h-[60vh] place-items-center">
+        <p className="text-text">Could not load this doctor.</p>
+      </div>
+    );
+  }
+
+  const doctor = mapDoctorDetailsToDoctor(data.data);
+  const reviews = (ratingsData?.data.ratings ?? []).map(mapDoctorReviewToReview);
+
+  return (
+    <section className="mx-auto w-full max-w-[1200px] px-6 py-8">
+      {/* Back header */}
+      <button
+        type="button"
+        onClick={() => navigate(-1)}
+        className="text-text-h flex cursor-pointer items-center gap-2 font-semibold"
+      >
+        <ArrowLeft className="size-5" />
+        Make an appointment
+      </button>
+
+      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
+        {/* Main column */}
+        <div className="flex flex-col gap-8 lg:col-span-2">
+          <BookingCalender
+            doctorId={doctorId}
+            onBook={({ date, time }) =>
+              toast.success(
+                `Booked for ${date.toLocaleDateString(undefined, {
+                  weekday: "short",
+                  month: "short",
+                  day: "numeric",
+                })} at ${time}`,
+              )
+            }
+          />
+
+          <div className="flex flex-col gap-5">
+            <ReviewsToolBar
+              rating={doctor.rating}
+              reviewsCount={doctor.reviewsCount}
+              doctorId={doctorId}
+            />
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              {reviews.map((review) => (
+                <ReviewCard key={review.id} review={review} />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Sidebar */}
+        <div className="lg:col-span-1">
+          <DoctorDetailsCard doctor={doctor} />
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default AppointmentPage;
