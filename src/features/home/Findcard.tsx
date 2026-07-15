@@ -1,14 +1,36 @@
 import "./Findcard.css";
 import { Search } from "lucide-react";
 
-import mapImage from "../../assets/go.png";
-import doctorImage from "../../assets/d.png";
+import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
+import { useEffect, useState } from "react";
+import "leaflet/dist/leaflet.css";
 
-const   Findcard = () => {
+function Recenter({ position }: { position: [number, number] }) {
+  const map = useMap();
+
+  useEffect(() => {
+    map.flyTo(position, 15);
+  }, [map, position]);
+
+  return null;
+}
+
+const Findcard = () => {
+  const [position, setPosition] = useState<[number, number] | null>(null);
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setPosition([pos.coords.latitude, pos.coords.longitude]);
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
+  }, []);
   return (
-    <section className="location-section">
-      <div className="location-container">
-
+    <section className="px-13">
+      <div className="location-container ">
         {/* Left Side */}
         <div className="location-left">
           <h2>
@@ -24,37 +46,33 @@ const   Findcard = () => {
           <div className="location-search">
             <Search size={18} />
 
-            <input
-              type="text"
-              placeholder="Search by location"
-            />
+            <input type="text" placeholder="Search by location" />
           </div>
         </div>
 
         {/* Right Side */}
-        <div className="location-right">
-          <img
-            src={mapImage}
-            alt="Map"
-            className="map-image"
-          />
+        <div className="flex w-145.75">
+          <MapContainer
+            center={position ?? [30.0444, 31.2357]} // Cairo fallback
+            zoom={13}
+            style={{ height: "400px", width: "100%" }}
+          >
+            <TileLayer
+              attribution="&copy; OpenStreetMap contributors"
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
 
-          {/* Doctor Pin 1 */}
-          <div className="doctor-pin pin-one">
-            <img src={doctorImage} alt="Doctor" />
-          </div>
+            {position && (
+              <>
+                <Recenter position={position} />
 
-          {/* Doctor Pin 2 */}
-          <div className="doctor-pin pin-two">
-            <img src={doctorImage} alt="Doctor" />
-          </div>
-
-          {/* Doctor Pin 3 */}
-          <div className="doctor-pin pin-three">
-            <img src={doctorImage} alt="Doctor" />
-          </div>
+                <Marker position={position}>
+                  <Popup>You are here</Popup>
+                </Marker>
+              </>
+            )}
+          </MapContainer>
         </div>
-
       </div>
     </section>
   );
