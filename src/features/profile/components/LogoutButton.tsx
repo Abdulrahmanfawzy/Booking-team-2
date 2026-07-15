@@ -7,7 +7,6 @@ export default function LogoutButton({ className }: { className?: string }) {
 
   function handleLogout() {
     logout();
-    window.location.href = "/";
   }
   return (
     <div className={cn(`w-full flex items-center cursor-pointer`, className)}>
