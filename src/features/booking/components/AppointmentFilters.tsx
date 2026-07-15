@@ -1,13 +1,14 @@
 import { Button } from "@/components/ui/button";
+import type { BookingFilterTab } from "../types";
 
 interface AppointmentFiltersProps {
-  activeFilter: string;
-  onFilterChange: (filter: string) => void;
+  activeFilter: BookingFilterTab;
+  onFilterChange: (filter: BookingFilterTab) => void;
 }
 
-const tabs: { label: string; value: string }[] = [
+const tabs: { label: string; value: BookingFilterTab }[] = [
   { label: "All", value: "all" },
-  { label: "Upcoming", value: "upcoming" },
+  { label: "Upcoming", value: "pending" },
   { label: "Completed", value: "completed" },
   { label: "Cancelled", value: "cancelled" },
 ];
@@ -25,7 +26,7 @@ export default function AppointmentFilters({
           onClick={() => onFilterChange(tab.value)}
           className={` ${activeFilter === tab.value
             ? "bg-brand text-white"
-            : "bg-transparent text-booking-text-secondary "
+            : "bg-transparent text-muted-foreground "
             }`}
         >
           {tab.label}
