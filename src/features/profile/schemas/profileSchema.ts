@@ -19,7 +19,7 @@ export const editProfileSchema = z.object({
   birth_Day: z.enum(days),
   birth_Month: z.enum(months),
   birth_Year: z.enum(years.map((year) => year.toString())),
-  location: z.string().nullable(),
+  address: z.string().nullable(),
 });
 
 export type EditProfileType = z.infer<typeof editProfileSchema>;

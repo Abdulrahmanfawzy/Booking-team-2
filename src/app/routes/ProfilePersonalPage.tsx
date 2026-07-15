@@ -12,17 +12,50 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 export default function ProfilePersonalPage() {
-  // const {mutate,isError,isSuccess,error}=useEditProfile();
+  const {
+    mutate,
+
+    error: valErrors,
+    isPending,
+  } = useEditProfile();
+
   const { data: user } = useGetProfile();
-  console.log(user);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<EditProfileType>({ resolver: zodResolver(editProfileSchema) });
+  } = useForm<EditProfileType>({
+    resolver: zodResolver(editProfileSchema),
+    defaultValues: {
+      name: user?.name,
+      phone: user?.phone,
+      email: user?.email,
+      birth_Day: user?.birth_date
+        ? new Date(user.birth_date).getDate().toString()
+        : undefined,
+      birth_Month: user?.birth_date
+        ? months[new Date(user.birth_date).getMonth()]
+        : undefined,
+      birth_Year: user?.birth_date
+        ? new Date(user.birth_date).getFullYear().toString()
+        : undefined,
+      address: user?.address,
+    },
+  });
 
   function onSubmit(data: EditProfileType) {
     console.log(data);
+    mutate({
+      name: data.name,
+      phone: data.phone,
+      email: data.email,
+      birth_date: `${data.birth_Year}-${months.indexOf(data.birth_Month) + 1}-${data.birth_Day}`,
+      address: data.address,
+      country: "EG",
+      gender: "male",
+      language: "AR",
+    });
   }
   return (
     <>
@@ -33,17 +66,23 @@ export default function ProfilePersonalPage() {
           <EditProfileInput
             {...register("name")}
             title="Full Name"
-            errorMSG={errors.name?.message}
+            errorMSG={
+              (errors.name?.message || valErrors?.errors?.name?.[0]) ?? ""
+            }
           />
           <EditProfileInput
             {...register("phone")}
             title="Phone Number"
-            errorMSG={errors.phone?.message}
+            errorMSG={
+              (errors.phone?.message || valErrors?.errors?.phone?.[0]) ?? ""
+            }
           />
           <EditProfileInput
             {...register("email")}
             title="Email"
-            errorMSG={errors.email?.message}
+            errorMSG={
+              (errors.email?.message || valErrors?.errors?.email?.[0]) ?? ""
+            }
           />
           <div className="space-y-1">
             <div>
@@ -89,18 +128,21 @@ export default function ProfilePersonalPage() {
               </BirthDayFieldWrapper>
             </div>
           </div>
-          {/*location */}
+          {/*address */}
           <EditProfileInput
-            {...register("location")}
-            title="Location"
+            {...register("address")}
+            title="Address"
             className="col-span-2"
-            errorMSG={errors.location?.message}
+            errorMSG={
+              (errors.address?.message || valErrors?.errors?.address?.[0]) ?? ""
+            }
           />
         </div>
         <div className="w-full text-end">
           <Button
             type="submit"
             className="md:w-1/3 w-full py-3 text-center bg-brand text-white hover:bg-blue-700"
+            isLoading={isPending}
           >
             Save Changes
           </Button>

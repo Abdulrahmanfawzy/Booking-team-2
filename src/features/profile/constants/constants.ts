@@ -19,5 +19,5 @@ const currentYear = new Date().getFullYear();
 
 export const years = Array.from(
   { length: currentYear - 1900 + 1 },
-  (_, i) => currentYear - i
+  (_, i) => currentYear - i,
 );
