@@ -1,17 +1,42 @@
-import { ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { ArrowLeft, Loader2 } from "lucide-react";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import BookingCalender from "@/features/appointment/component/BookingCalender";
 import DoctorDetailsCard from "@/features/appointment/component/DoctorDetailsCard";
 import ReviewsToolBar from "@/features/appointment/component/ReviewsToolBar";
 import ReviewCard from "@/features/appointment/component/ReviewCard";
+import { useDoctorDetails } from "@/features/appointment/hooks/useDoctorDetails";
+import { useDoctorRatings } from "@/features/appointment/hooks/useRatings";
 import {
-  mockDoctor,
-  mockReviews,
-} from "@/features/appointment/data/mockAppointment";
+  mapDoctorDetailsToDoctor,
+  mapDoctorReviewToReview,
+} from "@/features/appointment/utils/mappers";
 
 const AppointmentPage = () => {
   const navigate = useNavigate();
+  const { doctorId } = useParams();
+
+  const { data, isLoading, isError } = useDoctorDetails(doctorId);
+  const { data: ratingsData } = useDoctorRatings(doctorId);
+
+  if (isLoading) {
+    return (
+      <div className="grid min-h-[60vh] place-items-center">
+        <Loader2 className="size-8 animate-spin text-brand" />
+      </div>
+    );
+  }
+
+  if (isError || !data) {
+    return (
+      <div className="grid min-h-[60vh] place-items-center">
+        <p className="text-text">Could not load this doctor.</p>
+      </div>
+    );
+  }
+
+  const doctor = mapDoctorDetailsToDoctor(data.data);
+  const reviews = (ratingsData?.data.ratings ?? []).map(mapDoctorReviewToReview);
 
   return (
     <section className="mx-auto w-full max-w-[1200px] px-6 py-8">
@@ -29,6 +54,7 @@ const AppointmentPage = () => {
         {/* Main column */}
         <div className="flex flex-col gap-8 lg:col-span-2">
           <BookingCalender
+            doctorId={doctorId}
             onBook={({ date, time }) =>
               toast.success(
                 `Booked for ${date.toLocaleDateString(undefined, {
@@ -42,11 +68,12 @@ const AppointmentPage = () => {
 
           <div className="flex flex-col gap-5">
             <ReviewsToolBar
-              rating={mockDoctor.rating}
-              reviewsCount={mockDoctor.reviewsCount}
+              rating={doctor.rating}
+              reviewsCount={doctor.reviewsCount}
+              doctorId={doctorId}
             />
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              {mockReviews.map((review) => (
+              {reviews.map((review) => (
                 <ReviewCard key={review.id} review={review} />
               ))}
             </div>
@@ -55,7 +82,7 @@ const AppointmentPage = () => {
 
         {/* Sidebar */}
         <div className="lg:col-span-1">
-          <DoctorDetailsCard doctor={mockDoctor} />
+          <DoctorDetailsCard doctor={doctor} />
         </div>
       </div>
     </section>

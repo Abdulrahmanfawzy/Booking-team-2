@@ -5,9 +5,10 @@ import StarRating from "@/features/appointment/component/StarRating";
 
 interface ReviewFormProps {
   onSubmit?: (review: { rating: number; text: string }) => void;
+  isSubmitting?: boolean;
 }
 
-const ReviewForm = ({ onSubmit }: ReviewFormProps) => {
+const ReviewForm = ({ onSubmit, isSubmitting }: ReviewFormProps) => {
   const [rating, setRating] = useState(4);
   const [text, setText] = useState("");
 
@@ -46,7 +47,13 @@ const ReviewForm = ({ onSubmit }: ReviewFormProps) => {
         />
       </div>
 
-      <Button type="submit" variant="brand" size="xl" fullWidth>
+      <Button
+        type="submit"
+        variant="brand"
+        size="xl"
+        fullWidth
+        isLoading={isSubmitting}
+      >
         Send your review
       </Button>
     </form>

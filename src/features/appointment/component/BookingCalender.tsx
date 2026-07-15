@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import {
   addDays,
   format,
@@ -6,8 +6,6 @@ import {
   isBefore,
   isAfter,
   startOfToday,
-  setHours,
-  setMinutes,
 } from "date-fns";
 import {
   CalendarDays,
@@ -18,19 +16,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
-import { mockTimes } from "@/features/appointment/data/mockAppointment";
-import type {
-  TimeSlot,
-  OpeningHours,
-} from "@/features/appointment/types/appointment";
+import { useAvailableSlots } from "@/features/appointment/hooks/useAvailableSlots";
 
 interface BookingCalenderProps {
-  /** Weekday → "HH:mm" times from the API. When omitted, falls back to mock times. */
-  openingHours?: OpeningHours;
+  doctorId?: string;
   onBook?: (selection: { date: Date; time: string }) => void;
 }
 
-const BookingCalender = ({ openingHours, onBook }: BookingCalenderProps) => {
+const BookingCalender = ({ doctorId, onBook }: BookingCalenderProps) => {
   const today = startOfToday();
 
   const [selectedDate, setSelectedDate] = useState<Date>(today);
@@ -39,32 +32,19 @@ const BookingCalender = ({ openingHours, onBook }: BookingCalenderProps) => {
   const [selectedTime, setSelectedTime] = useState("");
   const [pickerOpen, setPickerOpen] = useState(false);
 
+  // Slots come pre-formatted ("07:00 AM") from the API, per selected day.
+  const { data, isLoading } = useAvailableSlots(doctorId, selectedDate);
+  const slots = data?.data ?? [];
+
+  // Derived (not stored): keep a valid selection as the day/slots change.
+  const effectiveTime = slots.includes(selectedTime)
+    ? selectedTime
+    : (slots[0] ?? "");
+
   const days = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
   const monthLabel = format(weekStart, "MMMM, yyyy");
-
-  // Time slots for the selected day: from the API's opening_hours, else mock.
-  const timeSlots = useMemo<TimeSlot[]>(() => {
-    if (!openingHours) return mockTimes;
-    const key = format(selectedDate, "EEE").toLowerCase() as keyof OpeningHours;
-    const hours = openingHours[key] ?? [];
-    return hours.map((t) => {
-      const [h, m] = t.split(":").map(Number);
-      const label = format(setMinutes(setHours(selectedDate, h), m), "h:mm a");
-      return { label, available: true };
-    });
-  }, [openingHours, selectedDate]);
-
-  // Keep a valid time selected as the day (and thus the slot list) changes.
-  useEffect(() => {
-    if (timeSlots.length === 0) {
-      setSelectedTime("");
-    } else if (!timeSlots.some((s) => s.label === selectedTime)) {
-      setSelectedTime(timeSlots[0].label);
-    }
-  }, [timeSlots, selectedTime]);
-
-  const summary = selectedTime
-    ? `${format(selectedDate, "EEEE, MMMM d")} - ${selectedTime}`
+  const summary = effectiveTime
+    ? `${format(selectedDate, "EEEE, MMMM d")} - ${effectiveTime}`
     : format(selectedDate, "EEEE, MMMM d");
 
   // Can't book the past: don't let the strip page before today's week.
@@ -168,25 +148,26 @@ const BookingCalender = ({ openingHours, onBook }: BookingCalenderProps) => {
 
       {/* Time slots */}
       <div className="mt-5 flex flex-wrap gap-3">
-        {timeSlots.length === 0 ? (
+        {isLoading ? (
+          <p className="text-text text-sm">Loading available times…</p>
+        ) : slots.length === 0 ? (
           <p className="text-text text-sm">No available times for this day.</p>
         ) : (
-          timeSlots.map((slot) => {
-            const isSelected = slot.label === selectedTime;
+          slots.map((label) => {
+            const isSelected = label === effectiveTime;
             return (
               <button
-                key={slot.label}
+                key={label}
                 type="button"
-                disabled={!slot.available}
-                onClick={() => setSelectedTime(slot.label)}
+                onClick={() => setSelectedTime(label)}
                 className={cn(
-                  "rounded-lg border px-4 py-2 text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-40",
+                  "rounded-lg border px-4 py-2 text-sm transition-colors",
                   isSelected
                     ? "border-brand bg-brand text-white"
                     : "border-border-secondary text-text hover:border-brand/40",
                 )}
               >
-                {slot.label}
+                {label}
               </button>
             );
           })
@@ -201,9 +182,9 @@ const BookingCalender = ({ openingHours, onBook }: BookingCalenderProps) => {
         </span>
         <Button
           variant="outline"
-          disabled={!selectedTime}
+          disabled={!effectiveTime}
           className="border-brand px-8 text-brand hover:bg-brand hover:text-white"
-          onClick={() => onBook?.({ date: selectedDate, time: selectedTime })}
+          onClick={() => onBook?.({ date: selectedDate, time: effectiveTime })}
         >
           Book
         </Button>
