@@ -5,6 +5,7 @@ import type {
   BookingDetailResponse,
   BookingApiResponse,
   ReschedulePayload,
+  CreateBookingPayload,
   Booking,
 } from "@/features/booking/types";
 
@@ -12,6 +13,16 @@ export const bookingApi = {
   /** GET /bookings – list all bookings for the authenticated user */
   async listBookings(): Promise<BookingListResponse> {
     return apiClient.get<BookingListResponse>(BOOKING_ENDPOINTS.LIST);
+  },
+
+  /** POST /bookings – create a new booking */
+  async createBooking(
+    payload: CreateBookingPayload,
+  ): Promise<BookingDetailResponse> {
+    return apiClient.post<BookingDetailResponse>(
+      BOOKING_ENDPOINTS.CREATE,
+      payload,
+    );
   },
 
   /** GET /bookings/:id – fetch a single booking's details */

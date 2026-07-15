@@ -1,12 +1,13 @@
 import { ArrowLeft, Loader2 } from "lucide-react";
+import { format } from "date-fns";
 import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "sonner";
 import BookingCalender from "@/features/appointment/component/BookingCalender";
 import DoctorDetailsCard from "@/features/appointment/component/DoctorDetailsCard";
 import ReviewsToolBar from "@/features/appointment/component/ReviewsToolBar";
 import ReviewCard from "@/features/appointment/component/ReviewCard";
 import { useDoctorDetails } from "@/features/appointment/hooks/useDoctorDetails";
 import { useDoctorRatings } from "@/features/appointment/hooks/useRatings";
+import { useCreateBooking } from "@/features/booking/hooks/useCreateBooking";
 import {
   mapDoctorDetailsToDoctor,
   mapDoctorReviewToReview,
@@ -18,6 +19,7 @@ const AppointmentPage = () => {
 
   const { data, isLoading, isError } = useDoctorDetails(doctorId);
   const { data: ratingsData } = useDoctorRatings(doctorId);
+  const { mutate: createBooking, isPending: isBooking } = useCreateBooking();
 
   if (isLoading) {
     return (
@@ -55,13 +57,17 @@ const AppointmentPage = () => {
         <div className="flex flex-col gap-8 lg:col-span-2">
           <BookingCalender
             doctorId={doctorId}
+            isBooking={isBooking}
             onBook={({ date, time }) =>
-              toast.success(
-                `Booked for ${date.toLocaleDateString(undefined, {
-                  weekday: "short",
-                  month: "short",
-                  day: "numeric",
-                })} at ${time}`,
+              createBooking(
+                {
+                  doctor_id: Number(doctorId),
+                  appointment_date: format(date, "yyyy-MM-dd"),
+                  appointment_time: time,
+                  // TODO: expose a clinic/online selector; defaulting for now.
+                  consultation_type: "clinic",
+                },
+                { onSuccess: () => navigate("/Booking") },
               )
             }
           />

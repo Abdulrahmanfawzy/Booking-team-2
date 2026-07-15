@@ -48,3 +48,10 @@ export interface ReschedulePayload {
   appointment_date: string; // "YYYY-MM-DD"
   appointment_time: string; // "HH:MM AM/PM"
 }
+
+export interface CreateBookingPayload {
+  doctor_id: number;
+  appointment_date: string; // "YYYY-MM-DD"
+  appointment_time: string; // "HH:MM AM/PM"
+  consultation_type: string; // e.g. "clinic"
+}

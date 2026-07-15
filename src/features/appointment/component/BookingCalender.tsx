@@ -20,10 +20,15 @@ import { useAvailableSlots } from "@/features/appointment/hooks/useAvailableSlot
 
 interface BookingCalenderProps {
   doctorId?: string;
+  isBooking?: boolean;
   onBook?: (selection: { date: Date; time: string }) => void;
 }
 
-const BookingCalender = ({ doctorId, onBook }: BookingCalenderProps) => {
+const BookingCalender = ({
+  doctorId,
+  isBooking,
+  onBook,
+}: BookingCalenderProps) => {
   const today = startOfToday();
 
   const [selectedDate, setSelectedDate] = useState<Date>(today);
@@ -182,7 +187,8 @@ const BookingCalender = ({ doctorId, onBook }: BookingCalenderProps) => {
         </span>
         <Button
           variant="outline"
-          disabled={!effectiveTime}
+          disabled={!effectiveTime || isBooking}
+          isLoading={isBooking}
           className="border-brand px-8 text-brand hover:bg-brand hover:text-white"
           onClick={() => onBook?.({ date: selectedDate, time: effectiveTime })}
         >
