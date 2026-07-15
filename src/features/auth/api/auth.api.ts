@@ -15,6 +15,8 @@ import type {
   ForgetPasswordResponse,
   VerifyResetOtpPayload,
   VerifyResetOtpResponse,
+  GoogleLoginPayload,
+  GoogleLoginResponse,
 } from "@/features/auth/types/auth";
 import apiClient from "@/services/ApiClient";
 
@@ -60,6 +62,9 @@ export const authApi = {
       "/auth/reset-password",
       payload,
     );
+  },
+  async googleLogin(payload: GoogleLoginPayload): Promise<GoogleLoginResponse> {
+    return apiClient.post<GoogleLoginResponse>("/auth/google-login", payload);
   },
 
   //persistant login

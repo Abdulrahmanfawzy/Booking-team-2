@@ -72,3 +72,6 @@ export type ResetPasswordResponse = {
   message: string;
   data: [];
 };
+
+export type GoogleLoginPayload = { id_token: string };
+export type GoogleLoginResponse = ApiResponse<AuthData>;
