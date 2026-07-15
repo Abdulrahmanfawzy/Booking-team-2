@@ -37,7 +37,7 @@ export default function ContactUsPage() {
   };
 
   return (
-    <section className="container mx-auto pt-30">
+    <section className="w-full max-w-[1200px] mx-auto px-6 pt-30">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
         {/* Left - Info */}
         <div>
