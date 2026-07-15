@@ -6,7 +6,9 @@ import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
 // Vite bundles the marker images with hashed names, so Leaflet's default paths
-// break. Point Leaflet at the imported URLs once, globally.
+// break. `_getIconUrl` must be removed first, otherwise Leaflet re-derives the
+// (broken) path and ignores the URLs we merge below — leaving the pin invisible.
+delete (L.Icon.Default.prototype as { _getIconUrl?: unknown })._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconUrl: markerIcon,
   iconRetinaUrl: markerIcon2x,
@@ -28,7 +30,9 @@ const Map = ({ lat, lng, address, zoom = 15, className }: MapProps) => {
       center={[lat, lng]}
       zoom={zoom}
       scrollWheelZoom={false}
-      className={className}
+      // `isolate` traps Leaflet's high z-index panes/controls in their own
+      // stacking context so the map can't paint over modals/dialogs.
+      className={`isolate ${className ?? ""}`}
       style={{ height: "100%", width: "100%" }}
     >
       <TileLayer

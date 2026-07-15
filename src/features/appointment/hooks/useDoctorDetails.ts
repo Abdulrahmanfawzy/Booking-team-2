@@ -20,6 +20,5 @@ export const useDoctorDetails = (doctorId?: string, coords?: Coords) =>
         latitude: coords?.latitude,
         longitude: coords?.longitude,
       }),
-    // Don't fire until we actually have a doctor id from the route.
     enabled: Boolean(doctorId),
   });

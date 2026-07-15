@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { doctorApi } from "@/features/appointment/api/doctor.api";
 
-/** Fetches the doctor's bookable time labels for a specific day. */
 export const useAvailableSlots = (doctorId?: string, date?: Date) => {
   const dateKey = date ? format(date, "yyyy-MM-dd") : undefined;
 
