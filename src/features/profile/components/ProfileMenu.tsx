@@ -6,22 +6,24 @@ import {
   ChevronRight,
   Heart,
   LockKeyhole,
-  MapPinHouse,
+  MapPin,
   Settings,
   X,
 } from "lucide-react";
 import LogoutButton from "./LogoutButton";
 
 import ProfileImage from "./ProfileImage";
+import { useGetProfile } from "../hooks/useGetUser";
 
 export default function ProfileIconMenu({ imageUrl }: { imageUrl: string }) {
   const [isOpen, setIsOpen] = useState(false);
+  const { data: user } = useGetProfile();
   const menuRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = () => setIsOpen((prev) => !prev);
 
   const links = [
-    { title: "Payment Method", Icon: Banknote },
+    { title: "Payment Method", Icon: Banknote, link: "#" },
     { title: "Favorite", Icon: Heart, link: "/favorite" },
     { title: "Settings", Icon: Settings, link: "/profile" },
     { title: "Privacy and Policy", Icon: LockKeyhole, link: "#" },
@@ -58,10 +60,10 @@ export default function ProfileIconMenu({ imageUrl }: { imageUrl: string }) {
             <div className="flex items-center gap-2.5">
               <ProfileImage imageUrl={imageUrl} className="w-15 h-15" />
               <div className="">
-                <h1 className="text-lg text-black">Seif Mohamed</h1>
-                <div className="flex items-center">
-                  <MapPinHouse className="h-3 w-3" />
-                  <p className="text-xs">129,El-Nasr Street, Cairo</p>
+                <h1 className="text-lg text-black">{user.name}</h1>
+                <div className="flex items-center gap-1">
+                  <MapPin className="h-3 w-3" />
+                  <p className="text-xs">{user.address}</p>
                 </div>
               </div>
             </div>

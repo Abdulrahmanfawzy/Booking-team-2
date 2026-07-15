@@ -1,11 +1,11 @@
 import axios from "axios";
-import type { EditProfileType } from "../schemas/profileSchema";
 import axiosInstance from "@/services/AxiosConfig";
+import type { EditProfilePayload } from "../types";
 
-export async function editProfile(data: EditProfileType) {
+export async function editProfile(data: EditProfilePayload) {
   try {
     //TODO edit profile end point
-    const res = await axiosInstance.put(``, data);
+    const res = await axiosInstance.put(`/profile`, data);
     return res.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {

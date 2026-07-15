@@ -1,11 +1,12 @@
+import { type ChangePasswordType } from "./../schemas/changePasswordSchema";
 import axios from "axios";
-import type { EditProfileType } from "../schemas/profileSchema";
+
 import axiosInstance from "@/services/AxiosConfig";
 
-export async function editPassword(data: EditProfileType) {
+export async function editPassword(data: ChangePasswordType) {
   try {
     //TODO edit profile password end point
-    const res = await axiosInstance.put(``, data);
+    const res = await axiosInstance.post(`/auth/change-password`, data);
     return res.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {

@@ -16,11 +16,12 @@ export default function ProfilePasswordPage() {
   } = useForm<ChangePasswordType>({
     resolver: zodResolver(changePasswordSchema),
   });
-  console.log(errors);
-  const { mutate, isError, isSuccess, error } = useEditPassword();
+
+  const { mutate, error: valErrors, isPending } = useEditPassword();
 
   function onSubmit(data: ChangePasswordType) {
     console.log(data);
+    mutate(data);
   }
   return (
     <>
@@ -28,10 +29,14 @@ export default function ProfilePasswordPage() {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
         <div className="md:space-y-5 space-y-6">
           <EditProfileInput
-            {...register("old_password")}
-            title="Old Password"
+            {...register("current_password")}
+            title="Current Password"
             type="password"
-            errorMSG={errors.old_password?.message}
+            errorMSG={
+              (errors.current_password?.message ||
+                valErrors?.errors?.credentials?.[0]) ??
+              ""
+            }
           />
           <EditProfileInput
             {...register("password")}
@@ -47,7 +52,10 @@ export default function ProfilePasswordPage() {
           />
         </div>
         <div className="w-full text-end">
-          <Button className="w-1/3 py-3 text-center bg-brand text-white hover:bg-blue-700">
+          <Button
+            className="w-1/3 py-3 text-center bg-brand text-white hover:bg-blue-700"
+            isLoading={isPending}
+          >
             Save Changes
           </Button>
         </div>

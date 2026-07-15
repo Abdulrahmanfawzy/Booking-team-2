@@ -26,9 +26,10 @@ axiosInstance.interceptors.response.use(
     // Token expired or revoked
     if (error.response?.status === 401) {
       tokenStorage.clear();
-      if (window.location.pathname !== "/sign-in") {
-        window.location.href = "/sign-in";
-      }
+
+      // if (window.location.pathname !== "/sign-in") {
+      //   window.location.href = "/sign-in";
+      // }
     }
     return Promise.reject(error);
   },
