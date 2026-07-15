@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   addDays,
   format,
@@ -6,6 +6,8 @@ import {
   isBefore,
   isAfter,
   startOfToday,
+  setHours,
+  setMinutes,
 } from "date-fns";
 import {
   CalendarDays,
@@ -17,25 +19,53 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { mockTimes } from "@/features/appointment/data/mockAppointment";
-import type { TimeSlot } from "@/features/appointment/types/appointment";
+import type {
+  TimeSlot,
+  OpeningHours,
+} from "@/features/appointment/types/appointment";
 
 interface BookingCalenderProps {
-  times?: TimeSlot[];
+  /** Weekday → "HH:mm" times from the API. When omitted, falls back to mock times. */
+  openingHours?: OpeningHours;
   onBook?: (selection: { date: Date; time: string }) => void;
 }
 
-const BookingCalender = ({ times = mockTimes, onBook }: BookingCalenderProps) => {
+const BookingCalender = ({ openingHours, onBook }: BookingCalenderProps) => {
   const today = startOfToday();
 
   const [selectedDate, setSelectedDate] = useState<Date>(today);
   // First day shown in the 7-day strip; paged by the arrows / date picker.
   const [weekStart, setWeekStart] = useState<Date>(today);
-  const [selectedTime, setSelectedTime] = useState("11:00 AM");
+  const [selectedTime, setSelectedTime] = useState("");
   const [pickerOpen, setPickerOpen] = useState(false);
 
   const days = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
   const monthLabel = format(weekStart, "MMMM, yyyy");
-  const summary = `${format(selectedDate, "EEEE, MMMM d")} - ${selectedTime}`;
+
+  // Time slots for the selected day: from the API's opening_hours, else mock.
+  const timeSlots = useMemo<TimeSlot[]>(() => {
+    if (!openingHours) return mockTimes;
+    const key = format(selectedDate, "EEE").toLowerCase() as keyof OpeningHours;
+    const hours = openingHours[key] ?? [];
+    return hours.map((t) => {
+      const [h, m] = t.split(":").map(Number);
+      const label = format(setMinutes(setHours(selectedDate, h), m), "h:mm a");
+      return { label, available: true };
+    });
+  }, [openingHours, selectedDate]);
+
+  // Keep a valid time selected as the day (and thus the slot list) changes.
+  useEffect(() => {
+    if (timeSlots.length === 0) {
+      setSelectedTime("");
+    } else if (!timeSlots.some((s) => s.label === selectedTime)) {
+      setSelectedTime(timeSlots[0].label);
+    }
+  }, [timeSlots, selectedTime]);
+
+  const summary = selectedTime
+    ? `${format(selectedDate, "EEEE, MMMM d")} - ${selectedTime}`
+    : format(selectedDate, "EEEE, MMMM d");
 
   // Can't book the past: don't let the strip page before today's week.
   const canGoPrev = isAfter(weekStart, today);
@@ -138,25 +168,29 @@ const BookingCalender = ({ times = mockTimes, onBook }: BookingCalenderProps) =>
 
       {/* Time slots */}
       <div className="mt-5 flex flex-wrap gap-3">
-        {times.map((slot) => {
-          const isSelected = slot.label === selectedTime;
-          return (
-            <button
-              key={slot.label}
-              type="button"
-              disabled={!slot.available}
-              onClick={() => setSelectedTime(slot.label)}
-              className={cn(
-                "rounded-lg border px-4 py-2 text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-40",
-                isSelected
-                  ? "border-brand bg-brand text-white"
-                  : "border-border-secondary text-text hover:border-brand/40",
-              )}
-            >
-              {slot.label}
-            </button>
-          );
-        })}
+        {timeSlots.length === 0 ? (
+          <p className="text-text text-sm">No available times for this day.</p>
+        ) : (
+          timeSlots.map((slot) => {
+            const isSelected = slot.label === selectedTime;
+            return (
+              <button
+                key={slot.label}
+                type="button"
+                disabled={!slot.available}
+                onClick={() => setSelectedTime(slot.label)}
+                className={cn(
+                  "rounded-lg border px-4 py-2 text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-40",
+                  isSelected
+                    ? "border-brand bg-brand text-white"
+                    : "border-border-secondary text-text hover:border-brand/40",
+                )}
+              >
+                {slot.label}
+              </button>
+            );
+          })
+        )}
       </div>
 
       {/* Footer: summary + book */}
@@ -167,6 +201,7 @@ const BookingCalender = ({ times = mockTimes, onBook }: BookingCalenderProps) =>
         </span>
         <Button
           variant="outline"
+          disabled={!selectedTime}
           className="border-brand px-8 text-brand hover:bg-brand hover:text-white"
           onClick={() => onBook?.({ date: selectedDate, time: selectedTime })}
         >

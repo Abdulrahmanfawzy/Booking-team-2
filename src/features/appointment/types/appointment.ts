@@ -155,3 +155,16 @@ export interface RatingPayload {
   rating: number;
   comment: string;
 }
+
+export interface RatingCreateResponse {
+  success: boolean;
+  message: string;
+  data: DoctorReview;
+}
+
+/** GET /doctors/{id}/available-slots?date=… — data is a list of "hh:mm AM/PM". */
+export interface AvailableSlotsResponse {
+  status: boolean;
+  message: string;
+  data: string[];
+}
