@@ -45,12 +45,13 @@ export default function ProfilePersonalPage() {
   });
 
   function onSubmit(data: EditProfileType) {
-    console.log(data);
     mutate({
       name: data.name,
       phone: data.phone,
       email: data.email,
-      birth_date: `${data.birth_Year}-${months.indexOf(data.birth_Month) + 1}-${data.birth_Day}`,
+      birth_date: `${data.birth_Year}-${months.indexOf(data.birth_Month) + 1}-${
+        data.birth_Day
+      }`,
       address: data.address,
       country: "EG",
       gender: "male",

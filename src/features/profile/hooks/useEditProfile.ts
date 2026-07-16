@@ -6,9 +6,11 @@ import type {
   EditProfileResponse,
   ValidationError,
 } from "../types";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
 export const useEditProfile = () => {
   const queryClient = new QueryClient();
+  const { logout } = useAuth();
   return useMutation<EditProfileResponse, ValidationError, EditProfilePayload>({
     mutationFn: editProfile,
     onSuccess: () => {
@@ -16,8 +18,11 @@ export const useEditProfile = () => {
       queryClient.invalidateQueries({ queryKey: ["profile"] });
     },
     onError: (error) => {
-      // console.log(error);
-      //TODO handle error properly, maybe with a toast notification and redirect if unauthorized
+      if ("status" in error && error.status === 401) {
+        toast.error("Session Expired please login.");
+        logout();
+        window.location.href = "/sign-in";
+      }
     },
   });
 };
