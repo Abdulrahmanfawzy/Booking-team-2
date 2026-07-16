@@ -2,6 +2,7 @@ import "./Docterhome.css";
 
 import { Star, ArrowRight, MapPin } from "lucide-react";
 import { useGetTopRatedDoctor } from "./hooks/useGetTopRatedDoctors";
+import { Link } from "react-router-dom";
 
 const Docterhome = () => {
   const { data: doctors } = useGetTopRatedDoctor();
@@ -50,6 +51,7 @@ const Docterhome = () => {
                   </div>
                   <div className="time">
                     <MapPin size={14} />
+
                     {doctor.address}
                   </div>
                 </div>
@@ -60,8 +62,18 @@ const Docterhome = () => {
               <span>Price/hour</span>
               <h4>${doctor.consultation_price}</h4>
             </div>
-
-            <button className="bookBtn">Book Appointment</button>
+            <label
+              htmlFor="bookAppointment"
+              className="w-full h-11.5 rounded-xl bg-blue-600 text-white text-[15px] font-semibold flex items-center justify-center"
+            >
+              <Link
+                id="bookAppointment"
+                to={`/appointment/${doctor.id}`}
+                className="w-full text-center"
+              >
+                Book Appointment
+              </Link>
+            </label>
           </div>
         ))}
       </div>
