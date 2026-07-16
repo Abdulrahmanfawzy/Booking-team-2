@@ -20,7 +20,6 @@ export default function ProfilePasswordPage() {
   const { mutate, error: valErrors, isPending } = useEditPassword();
 
   function onSubmit(data: ChangePasswordType) {
-    console.log(data);
     mutate(data);
   }
   return (

@@ -4,13 +4,12 @@ import type { EditProfilePayload } from "../types";
 
 export async function editProfile(data: EditProfilePayload) {
   try {
-    //TODO edit profile end point
     const res = await axiosInstance.put(`/profile`, data);
     return res.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log(error.response);
-      throw error.response?.data || "An error occurred";
+      throw error.response || "An error occurred";
     }
   }
 }
