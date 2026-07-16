@@ -12,7 +12,7 @@ export default function SignUpPage() {
       />
       <SignUpForm />
       <OrLine />
-      <GoogleBtn text="Sign up with Google" />
+      <GoogleBtn text="signup_with" />
 
       <AuthSwitchPrompt
         question="Already have an account?"

@@ -10,7 +10,7 @@ export default function SignInPage() {
       <AuthHeader title="Sign in" text="Please Enter your phone number" />
       <SignInForm />
       <OrLine />
-      <GoogleBtn text="Sign in with Google" />
+      <GoogleBtn text="signin_with" />
 
       <AuthSwitchPrompt
         question="Don't have an account?"

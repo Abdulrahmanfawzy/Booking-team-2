@@ -5,8 +5,10 @@ import type { User } from "@/features/auth/types/auth";
 export const TOKEN_KEY = "token";
 const USER_KEY = "auth_user";
 
-const read = (key: string) =>
-  localStorage.getItem(key) ?? sessionStorage.getItem(key);
+const read = (key: string) => {
+  const value = localStorage.getItem(key) ?? sessionStorage.getItem(key);
+  return value === "undefined" || value === "null" ? null : value;
+};
 
 const write = (key: string, value: string, remember: boolean) => {
   const target = remember ? localStorage : sessionStorage;
@@ -22,8 +24,11 @@ const remove = (key: string) => {
 
 export const tokenStorage = {
   getToken: () => read(TOKEN_KEY),
-  setToken: (token: string, remember: boolean) =>
-    write(TOKEN_KEY, token, remember),
+  setToken: (token: string, remember: boolean) => {
+    // Never persist a missing token — it would fake an authenticated session.
+    if (!token) return remove(TOKEN_KEY);
+    write(TOKEN_KEY, token, remember);
+  },
   removeToken: () => remove(TOKEN_KEY),
 
   getUser(): User | null {

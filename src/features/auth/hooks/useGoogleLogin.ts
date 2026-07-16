@@ -13,7 +13,20 @@ export const useGoogleLogin = () => {
   return useMutation({
     mutationFn: (payload: GoogleLoginPayload) => authApi.googleLogin(payload),
     onSuccess: (res) => {
-      login(res.data.token, res.data.user, true);
+      // Don't half-log-in: without a real token every protected request 500s
+
+      const token = res?.data?.token;
+      const user = res?.data?.user;
+      if (!token || !user) {
+        // TEMP: reveals the real response shape so we can handle it properly.
+        console.log("google-login response:", JSON.stringify(res, null, 2));
+        toast.error(
+          "Google sign-in didn't return a session. Please try again.",
+        );
+        return;
+      }
+
+      login(token, user, true);
       toast.success(res.message);
       navigate("/", { replace: true });
     },

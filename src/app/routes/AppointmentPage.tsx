@@ -8,6 +8,7 @@ import ReviewCard from "@/features/appointment/component/ReviewCard";
 import { useDoctorDetails } from "@/features/appointment/hooks/useDoctorDetails";
 import { useDoctorRatings } from "@/features/appointment/hooks/useRatings";
 import { useCreateBooking } from "@/features/booking/hooks/useCreateBooking";
+import { getApiErrorMessage } from "@/features/auth/utils/apiError";
 import {
   mapDoctorDetailsToDoctor,
   mapDoctorReviewToReview,
@@ -17,7 +18,7 @@ const AppointmentPage = () => {
   const navigate = useNavigate();
   const { doctorId } = useParams();
 
-  const { data, isLoading, isError } = useDoctorDetails(doctorId);
+  const { data, isLoading, isError, error } = useDoctorDetails(doctorId);
   const { data: ratingsData } = useDoctorRatings(doctorId);
   const { mutate: createBooking, isPending: isBooking } = useCreateBooking();
 
@@ -31,8 +32,15 @@ const AppointmentPage = () => {
 
   if (isError || !data) {
     return (
-      <div className="grid min-h-[60vh] place-items-center">
-        <p className="text-text">Could not load this doctor.</p>
+      <div className="grid min-h-[60vh] place-items-center px-6 text-center">
+        <div>
+          <p className="text-text-h font-medium">Could not load this doctor.</p>
+          {/* Surface the API's reason — e.g. an auth failure — instead of
+              hiding it behind a generic message. */}
+          <p className="text-text mt-2 text-sm">
+            {getApiErrorMessage(error, "Please try again later.")}
+          </p>
+        </div>
       </div>
     );
   }
