@@ -1,6 +1,6 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
-
+import {useState} from "react"
 
 import { Button } from "@/components/ui/button";
 import {
@@ -52,9 +52,16 @@ function handleCheckBoxes (list){
 }
 
 const FilterSelectorsSidebar = ({ sideBarState }) => {
+  const [activeGender,setActiveGender]=useState("male");
+  
+  function handleAciveGender(){
+    setActiveGender(activeGender === "male" ? "female" : "male");
+  }
   return (
     <>
-      <FieldGroup className={`mx-auto w-56  duration-300 overflow-hidden ${sideBarState?"w-56":"w-0"}`}>
+      <FieldGroup
+        className={`mx-auto w-56  duration-300 overflow-hidden ${sideBarState ? "w-56" : "w-0"}`}
+      >
         <h3 className="capitalize text-lg font-semibold my-1">
           available date
         </h3>
@@ -64,15 +71,17 @@ const FilterSelectorsSidebar = ({ sideBarState }) => {
           <Button
             variant="secondary"
             size="lg"
-            className="capitalize cursor-pointer bg-brand text-white"
-          >
+            className={`capitalize cursor-pointer ${activeGender == "male" ? "text-white bg-brand" : ""}`}
+            onClick={handleAciveGender}
+            >
             male
           </Button>
           <ButtonGroupSeparator />
           <Button
             variant="secondary"
             size="lg"
-            className="capitalize cursor-pointer"
+            className={`capitalize cursor-pointer ${activeGender == "female" ? "text-white bg-brand" : ""}`}
+            onClick={handleAciveGender}
           >
             female
           </Button>

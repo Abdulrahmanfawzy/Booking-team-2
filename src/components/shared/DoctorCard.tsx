@@ -4,12 +4,8 @@ import { Button } from "@/components/ui/button";
 
 const DoctorCard = ({
   header=false,
-  image,
+  image=false,
   namespecialization,
-  hospital,
-  rate,
-  time,
-  price,
 }) => {
   return (
     <section className="shadow-main rounded-lg p-5">
@@ -21,14 +17,14 @@ const DoctorCard = ({
         <section className="flex items-center gap-4">
           {/* ProfileImage */}
           <img
-            src="https://placehold.co/400x400"
+            src={!image && "https://placehold.co/400x400"}
             className="size-21 rounded-lg"
             alt="DoctorCardImage"
           />
           {/*=== ProfileImage ===*/}
           <section className="space-y-1">
             <h5 className="text-text-h font-semibold capitalize">
-              Robert Johnson
+              {namespecialization}
             </h5>
             <p className="text-text font-light text-md">
               Orthopedic | El-Nasr Hospital
@@ -57,7 +53,7 @@ const DoctorCard = ({
         {/* Booking Button */}
         <Button
           variant="outline"
-          className="capitalize cursor-pointer py-5 px-7! text-white bg-brand! w-full text-md font-semibold"
+          className="capitalize cursor-pointer py-5 px-7! text-white bg-brand! w-full text-md font-semibold hover:text-[#ddd] duration-300"
         >
           Book appointment
         </Button>

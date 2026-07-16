@@ -10,12 +10,19 @@ import {
 const SearchBar = ({
   color,
   padding,
+  handleSearch,
 }: {
   color?: string;
   padding?: string;
+  handleSearch:()=>void;
 }) => {
   return (
-    <Field className="hidden md:block w-1/3">
+    <Field
+      className="hidden md:block"
+      onChange={(e) => {
+        handleSearch(e);
+      }}
+    >
       <InputGroup
         className="bg-grey border-transparent shadow-card"
         style={{ backgroundColor: color, paddingBlock: `${padding}px` }}
