@@ -4,6 +4,7 @@ import { Search } from "lucide-react";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import { useEffect, useState } from "react";
 import "leaflet/dist/leaflet.css";
+import { useGetTopRatedDoctor } from "./hooks/useGetTopRatedDoctors";
 
 function Recenter({ position }: { position: [number, number] }) {
   const map = useMap();
@@ -17,6 +18,7 @@ function Recenter({ position }: { position: [number, number] }) {
 
 const Findcard = () => {
   const [position, setPosition] = useState<[number, number] | null>(null);
+  const { data: doctors } = useGetTopRatedDoctor();
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -71,6 +73,14 @@ const Findcard = () => {
                 </Marker>
               </>
             )}
+            {doctors.map((doctor) => (
+              <Marker
+                key={doctor.id}
+                position={[doctor.latitude, doctor.longitude]}
+              >
+                <Popup>{doctor.name}</Popup>
+              </Marker>
+            ))}
           </MapContainer>
         </div>
       </div>
