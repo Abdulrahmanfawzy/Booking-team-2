@@ -4,9 +4,11 @@ import { editPassword } from "../services/editPassword";
 import { toast } from "sonner";
 import type { PasswordResponse, PasswordValError } from "../types";
 import type { ChangePasswordType } from "../schemas/changePasswordSchema";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
 export const useEditPassword = () => {
   const queryClient = new QueryClient();
+  const { logout } = useAuth();
   return useMutation<PasswordResponse, PasswordValError, ChangePasswordType>({
     mutationFn: editPassword,
     onSuccess: () => {
@@ -14,9 +16,11 @@ export const useEditPassword = () => {
       queryClient.invalidateQueries({ queryKey: ["profile"] });
     },
     onError: (error) => {
-      //TODO handle error properly, maybe with a toast notification and redirect if unauthorized
-      console.log(error);
-      alert(`Error updating profile: ${error.message}`);
+      if ("status" in error && error.status === 401) {
+        toast.error("Session Expired please login.");
+        logout();
+        window.location.href = "/sign-in";
+      }
     },
   });
 };
