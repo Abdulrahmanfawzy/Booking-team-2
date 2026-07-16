@@ -2,22 +2,22 @@ import { z } from "zod";
 
 export const changePasswordSchema = z
   .object({
-    current_password: z.string().min(1, "Old Password is required"),
+    current_password: z.string().min(1, "Current Password is required"),
     password: z
       .string()
       .min(1, "Password is required")
       .regex(
         /[A-Z]/,
-        "The password field must contain at least one uppercase letter.",
+        "The password field must contain at least one uppercase letter."
       )
       .regex(
         /[a-z]/,
-        "The password field must contain at least one lowercase letter.",
+        "The password field must contain at least one lowercase letter."
       )
       .regex(/[A-Za-z]/, "The password field must contain at least one letter.")
       .regex(
         /[^A-Za-z0-9]/,
-        "The password field must contain at least one symbol.",
+        "The password field must contain at least one symbol."
       ),
 
     password_confirmation: z.string().min(1, "ConfirmPassword is required"),

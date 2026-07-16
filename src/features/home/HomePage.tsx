@@ -7,13 +7,13 @@ import FAQ from "@/features/home/FQa";
 
 export default function HomePage() {
   return (
-    <>
+    <div className="py-13">
       <Horehome />
       <Homework />
       <Findcard />
       <Docterhome />
       <Reviews />
       <FAQ />
-    </>
+    </div>
   );
 }
