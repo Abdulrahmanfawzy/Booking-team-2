@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { days, months, years } from "../constants/constants";
-//TODO match the api input names
 
 export const editProfileSchema = z.object({
   name: z

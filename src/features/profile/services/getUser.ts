@@ -5,7 +5,6 @@ import type { UserProfile } from "../types";
 
 export async function getProfile(): Promise<UserProfile> {
   try {
-    //TODO edit profile end point
     const res = await axiosInstance.get(`/profile`);
     return res.data.data as UserProfile;
   } catch (error) {
