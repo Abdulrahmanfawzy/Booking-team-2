@@ -4,12 +4,8 @@ import Findcard from "@/features/home/Findcard";
 import Docterhome from "@/features/home/Docterhome";
 import Reviews from "@/features/home/Reviews";
 import FAQ from "@/features/home/FQa";
-import { useGetTopRatedDoctor } from "./hooks/useGetTopRatedDoctors";
 
 export default function HomePage() {
-  // const { data } = useGetTopRatedDoctor();
-  // console.log(data);
-
   return (
     <div className="py-13">
       <Horehome />

@@ -10,7 +10,7 @@ import { Outlet } from "react-router-dom";
 export default function ProfilePageLayout() {
   const { data: user } = useGetProfile();
   const { mutate } = useEditProfile();
-  //TODO upload profile image
+
   return (
     <div className="min-h-screen h-full px-13 py-8">
       <div className=" md:flex md:gap-16 space-y-14.5">
