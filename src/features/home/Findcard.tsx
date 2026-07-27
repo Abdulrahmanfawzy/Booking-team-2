@@ -73,7 +73,7 @@ const Findcard = () => {
                 </Marker>
               </>
             )}
-            {doctors.map((doctor) => (
+            {(doctors ?? []).map((doctor) => (
               <Marker
                 key={doctor.id}
                 position={[doctor.latitude, doctor.longitude]}

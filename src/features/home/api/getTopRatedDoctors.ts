@@ -14,11 +14,9 @@ export type TopRatedDoctors = {
 };
 
 export async function getTopRatedDoctors(): Promise<TopRatedDoctors[]> {
-  try {
-    const res = await axiosInstance.get(`/home`);
-
-    return res.data.data.top_rated_doctors;
-  } catch (error) {
-    console.log(error);
-  }
+  // Let request/network errors throw so React Query can expose them via
+  // `isError`. Guard the response shape so a 200 with a missing field still
+  // resolves to a usable array instead of `undefined`.
+  const res = await axiosInstance.get(`/home`);
+  return res.data?.data?.top_rated_doctors ?? [];
 }

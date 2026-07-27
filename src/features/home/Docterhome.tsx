@@ -5,7 +5,7 @@ import { useGetTopRatedDoctor } from "./hooks/useGetTopRatedDoctors";
 import { Link } from "react-router-dom";
 
 const Docterhome = () => {
-  const { data: doctors } = useGetTopRatedDoctor();
+  const { data: doctors, isLoading, isError, refetch } = useGetTopRatedDoctor();
 
   return (
     <section className="topDoctors">
@@ -32,8 +32,32 @@ const Docterhome = () => {
         </button>
       </div>
 
+      {isLoading && (
+        <p className="text-center text-gray-500 py-10">Loading doctors…</p>
+      )}
+
+      {isError && (
+        <div className="text-center py-10">
+          <p className="text-gray-500 mb-3">
+            We couldn't load the top-rated doctors right now.
+          </p>
+          <button
+            onClick={() => refetch()}
+            className="px-4 py-2 rounded-lg border border-blue-600 text-blue-600"
+          >
+            Try again
+          </button>
+        </div>
+      )}
+
+      {!isLoading && !isError && doctors?.length === 0 && (
+        <p className="text-center text-gray-500 py-10">
+          No doctors available at the moment.
+        </p>
+      )}
+
       <div className="doctorGrid">
-        {doctors.map((doctor) => (
+        {(doctors ?? []).map((doctor) => (
           <div className="doctorCard" key={doctor.id}>
             <div className="cardTop">
               <div className="doctorImage">
